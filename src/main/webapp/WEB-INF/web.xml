@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         id="WebApp_ID" version="3.1">
+
+  <display-name>Archetype Created Web Application</display-name>
+  <!-- ===========配置spring框架bean容器管理=============== -->
+  <!-- 配置框架启动需加载的相关参数 -->
+  <context-param>
+    <!-- 该参数名是固定的，用在spring监听器中 -->
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:spring.xml</param-value>
+  </context-param>
+  <!-- 配置spring的监听器：使spring一直监听web容器，对web容器中的所有的实体对象进行管理， 等价于加载ApplicationContext
+      context 对象 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!-- 防止Spring内存溢出监听器(可选) -->
+  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+
+  <!-- ==========配置springmvc的默认控制转发servlet：DispatcherServlet============= -->
+  <servlet>
+    <servlet-name>defaultServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- 设置初始化参数，加载配置文件 -->
+    <init-param>
+      <!-- 参数名是固定的，不能写错 -->
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvc.xml</param-value>
+    </init-param>
+    <!-- 父进程的加载顺序，web服务器已启动就加载 -->
+    <load-on-startup>1</load-on-startup>
+    <async-supported>true</async-supported>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>defaultServlet</servlet-name>
+    <!-- 过滤转发的路径范围 -->
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <!-- ==========配置springmvc的编码过滤器============= -->
+  <!-- http编码过滤器的配置 -->
+  <!-- 配置spring框架提供的编码过滤器 -->
+  <filter>
+    <filter-name>springCharsetEncoding</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <!-- 编码格式的参数：参数名 encoding是固定的名字 -->
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>springCharsetEncoding</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- =========框架默认启动主页============ -->
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
