@@ -6,6 +6,10 @@
 <body>
 <h2>Hello World!</h2>
 <input id="button" type="button" value="请求">
+<form action="twoAction" method ="post">
+    <input id="button2" type="submit" value="另一个请求">
+</form>
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
