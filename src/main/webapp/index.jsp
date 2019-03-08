@@ -6,7 +6,9 @@
 <body>
 <h2>Hello World!</h2>
 <input id="button" type="button" value="请求">
-<form action="twoAction" method ="post">
+<form id="one" action="twoAction" method ="post">
+    <input name="id" type="text">
+    <input name="password" type="text">
     <input id="button2" type="submit" value="另一个请求">
 </form>
 
@@ -17,10 +19,11 @@
             $.ajax({
                 type: "POST",
                 url : "oneAction",
+                data: $("#one").serialize(),
                 async : false,
                 success : function (data) {
                     data.forEach(function (node) {
-                        console.info(node);
+                        alert(node);
                     })
                 }
             })

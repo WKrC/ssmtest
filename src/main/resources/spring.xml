@@ -9,5 +9,46 @@
 
     <!-- 扫描所有的需要依赖注入的实例变量 -->
     <context:component-scan base-package="com.wkr"></context:component-scan>
+    <!-- 引入属性文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- druid数据源 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 数据库连接相关信息 -->
+        <property name="url" value="${jdbc.url}"/>
+        <property name="driverClassName" value="${jdbc.driverClass}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!-- 配置Hibernate的SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <!-- 注入连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 配置Hibernate属性 -->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.show_sql">true</prop><!-- 是否展示SQL -->
+                <prop key="hibernate.hbm2ddl.auto">update</prop><!-- 是否自动创建表结构 -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop><!-- 数据库方言 -->
+            </props>
+        </property>
+        <!-- 扫描并加载注解过的实体类 -->
+        <property name="packagesToScan" value="com.wkr.bean"/>
+
+    </bean>
+
+    <!-- 配置hibernateTemplate对象 -->
+    <!-- hibernateTemplate是spring对hibernate使用的一个简单封装 -->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <!--注入sessionFactory-->
+        <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="checkWriteOperations" value="false"/>   <!-- hibernate报的只读权限的问题添加这个 -->
+    </bean>
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <!-- 注入SessionFactory -->
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
 
 </beans>

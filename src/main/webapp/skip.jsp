@@ -6,11 +6,28 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html lang="zh">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World!</title>
+    <link rel="stylesheet" type="text/css" href="static/assets/css/base.css" />
 </head>
 <body>
-    Hello World!
+<!-- COIDEA:header START -->
+<header class="coidea-header">
+
+</header>
+<!-- COIDEA:header END -->
+
+<!-- COIDEA:demo START -->
+<section id="ci-particles">
+    <canvas id="canvas"></canvas>
+    <h2 id="headline">Hello World!</h2>
+</section>
+<!-- COIDEA:demo END -->
+
+<script src="static/sassets/js/demo.js"></script>
 </body>
 </html>
