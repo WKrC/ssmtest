@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta http-equiv="refresh" content="4;url=one.jsp">
+    <meta http-equiv="refresh" content="4.5;url=one.jsp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World!</title>
     <link rel="stylesheet" type="text/css" href="static/assets/css/base.css" />
