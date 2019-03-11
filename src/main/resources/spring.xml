@@ -2,14 +2,20 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
     <!-- 扫描所有的需要依赖注入的实例变量 -->
     <context:component-scan base-package="com.wkr"></context:component-scan>
-    <!-- 引入属性文件 -->
+    <!-- 引入数据库属性文件 -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
     <!-- druid数据源 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
@@ -49,6 +55,8 @@
         <!-- 注入SessionFactory -->
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-
+     <!--注解方式配置事务：在使用事务处理的方法上添加注解 @Transactional 即可 -->
+    <!-- 开启事务扫描，采用注解方式 -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

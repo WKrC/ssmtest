@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Table(name = "userList", catalog = "postgres") // 映射一个表product，所对应的数据库是postgres(可忽略)，
 public class UserBean {
     @Id
-    //@GenericGenerator(name = "id", strategy = "uuid")//自定义主键生成策略 实现自增  name - 指定的是生成器名称   strategy - 生成策略
-    @GeneratedValue(strategy=GenerationType.AUTO)//采用数据库自增方式生成主键
+    @GeneratedValue(generator = "id")// generator - 表示主键生成器的名称，这个属性通常和 ORM 框架相关 , 例如：Hibernate 可以指定 uuid 等主键生成方式
+    @GenericGenerator(name = "id", strategy = "increment")//自定义主键生成策略 实现自增  name - 指定的是生成器名称   strategy - 生成策略
     private int id;
     @Column(name = "name")
     private String name;// 商品名称
