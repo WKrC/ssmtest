@@ -60,11 +60,26 @@
 <!-- COIDEA:demo START -->
 <section id="ci-particles">
     <canvas id="canvas" ></canvas>
-    <h2 id="headline">寄件  查询</h2>
+    <h2 id="headline" style="color: #212121;">寄件  查询</h2>
+    <div id="jijian" style="top: 230px;left:220px;position: absolute;height: 300px;width: 520px;z-index:2000;border-width: 2px;border-color: #212121;border-style: dashed;">
+    </div>
+    <div id="chaxun" style="top: 230px;left:800px;position: absolute;height: 300px;width: 520px;z-index:2000;border-width: 2px;border-color: #212121;border-style: dashed;">
+    </div>
 </section>
 <!-- COIDEA:demo END -->
 
 <script src="static/assets/js/demo.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#jijian").click(function () {
+          alert("寄件");
+        })
+        $("#chaxun").click(function () {
+            alert("查询");
+        })
+    })
+</script>
 </body>
 </html>
 
