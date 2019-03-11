@@ -10,6 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="refresh" content="4;url=three.jsp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World!</title>
     <link rel="stylesheet" type="text/css" href="static/assets/css/base.css" />
@@ -29,27 +30,5 @@
 <!-- COIDEA:demo END -->
 
 <script src="static/assets/js/demo.js"></script>
-<script type="text/javascript">
-    $(function(){
-        var flag = $("#headline").innerText;
-        function test(flag){
-            switch (flag){
-                case "Welcome!":
-                    $("#headline").innerHTML = "3";
-                    break;
-                case "3":
-                    $("#headline").innerHTML = "2";
-                    break;
-                case "2":
-                    $("#headline").innerHTML = "1";
-                    break;
-                case "1":
-                    break;
-            }
-            history.go(0);//可以换成上一篇博客的任何一种方法。
-        }
-        setInterval(test, 1000);
-    })
-</script>
 </body>
 </html>
