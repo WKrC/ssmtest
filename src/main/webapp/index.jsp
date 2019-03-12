@@ -49,6 +49,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World!</title>
     <link rel="stylesheet" type="text/css" href="static/assets/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="static/my/css/donghua.css" />
 </head>
 <body>
 <!-- COIDEA:header START -->
@@ -61,9 +62,33 @@
 <section id="ci-particles">
     <canvas id="canvas" ></canvas>
     <h2 id="headline" style="color: #212121;">寄件  查询</h2>
-    <div id="jijian" style="top: 230px;left:220px;position: absolute;height: 300px;width: 520px;z-index:2000;border-width: 2px;border-color: #212121;border-style: dashed;">
+    <div id="jijian" style="">
     </div>
-    <div id="chaxun" style="top: 230px;left:800px;position: absolute;height: 300px;width: 520px;z-index:2000;border-width: 2px;border-color: #212121;border-style: dashed;">
+    <div id="chaxun" style="">
+    </div>
+    <div id="top-head-inner">
+        <div id="nav-toggle">
+            <div>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <nav id="global-nav">
+            <ul>
+                <li class="jijianli"><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp寄件人&nbsp:</span>&nbsp<input id="sender" type="text"></li>
+                <li class="jijianli"><span>寄件人手机&nbsp:</span>&nbsp<input id="sender_phone" type="text"></li>
+                <li class="jijianli"><span>寄件人地址&nbsp:</span>&nbsp<input id="sender_addr" type="text"></li>
+                <li class="jijianli"><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp收件人&nbsp:</span>&nbsp<input id="consignee" type="text"></li>
+                <li class="jijianli"><span>收件人手机&nbsp:</span>&nbsp<input id="consignee_phone" type="text"></li>
+                <li class="jijianli"><span>收件人地址&nbsp:</span>&nbsp<input id="consignee_addr" type="text"></li>
+                <li class="jijianli"><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp备注&nbsp:</span>&nbsp<input id="remaker" type="text"></li>
+                <li class="jijianli"><span>&nbsp&nbsp&nbsp</span><input id="submitbutton" type="button"  value="提交"></li>
+                <li class="chaxunli"><span>&nbsp&nbsp&nbsp物流单号&nbsp:</span>&nbsp<input id="goodsIndexCode" type="text"></li>
+                <li class="chaxunli"><span>&nbsp&nbsp&nbsp</span><input id="chaxunbutton" type="button"  value="查询"></li>
+            </ul>
+        </nav>
+        <div id="nav-bg"></div>
     </div>
 </section>
 <!-- COIDEA:demo END -->
@@ -71,12 +96,73 @@
 <script src="static/assets/js/demo.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+    var closeFlag = 0;
+    var jijiandatas = {
+        'sender': $("#sender").val(),
+        'sender_phone': $("#sender_phone").val(),
+        'sender_addr': $("#sender_addr").val(),
+        'consignee': $("#consignee").val(),
+        'consignee_phone': $("#consignee_phone").val(),
+        'consignee_addr': $("#consignee_addr").val(),
+        'remaker': $("#remaker").val()
+    }
+    var chaxundatas = {
+        'goodsIndexCode' : $("#goodsIndexCode").val()
+    }
     $(function () {
         $("#jijian").click(function () {
-          alert("寄件");
+            $(".chaxunli").css("display", "none");
+            $('body').toggleClass('open');
+            closeFlag = 1;
         })
         $("#chaxun").click(function () {
-            alert("查询");
+            $(".jijianli").css("display", "none");
+            $('body').toggleClass('open');
+            closeFlag = 2;
+        })
+        $('#nav-toggle').click(function(){
+            if (closeFlag > 0){
+                $('body').toggleClass('open');
+                $(".jijianli").css("display", "block");
+                $(".chaxunli").css("display", "block");
+                closeFlag = 0;
+            }
+        });
+
+        $("#submitbutton").click(function () {
+            $.ajax({
+                url : "jijianControl",
+                type: "POST",
+                data : {
+                    'sender': $("#sender").val(),
+                    'sender_phone': $("#sender_phone").val(),
+                    'sender_addr': $("#sender_addr").val(),
+                    'consignee': $("#consignee").val(),
+                    'consignee_phone': $("#consignee_phone").val(),
+                    'consignee_addr': $("#consignee_addr").val(),
+                    'remaker': $("#remaker").val()
+                },
+                success : function(result) {
+                    if(result&&result.indexCode != undefined){
+                        alert(result.indexCode);
+                    }
+                }
+            })
+        })
+
+        $("#chaxunbutton").click(function () {
+            $.ajax({
+                url : "chaxunControl",
+                type: "POST",
+                data : {
+                    'goodsIndexCode' : $("#goodsIndexCode").val()
+                },
+                success : function(result) {
+                    if(result != undefined){
+                        console.info(result);
+                    }
+                }
+            })
         })
     })
 </script>
