@@ -76,15 +76,15 @@
         </div>
         <nav id="global-nav">
             <ul>
-                <li class="jijianli"><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp寄件人&nbsp:</span>&nbsp<input id="sender" type="text"></li>
-                <li class="jijianli"><span>寄件人手机&nbsp:</span>&nbsp<input id="sender_phone" type="text"></li>
-                <li class="jijianli"><span>寄件人地址&nbsp:</span>&nbsp<input id="sender_addr" type="text"></li>
-                <li class="jijianli"><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp收件人&nbsp:</span>&nbsp<input id="consignee" type="text"></li>
-                <li class="jijianli"><span>收件人手机&nbsp:</span>&nbsp<input id="consignee_phone" type="text"></li>
-                <li class="jijianli"><span>收件人地址&nbsp:</span>&nbsp<input id="consignee_addr" type="text"></li>
-                <li class="jijianli"><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp备注&nbsp:</span>&nbsp<input id="remaker" type="text"></li>
+                <li class="jijianli"><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp寄件人&nbsp:</span>&nbsp<input id="sender" autocomplete="off" type="text"></li>
+                <li class="jijianli"><span>寄件人手机&nbsp:</span>&nbsp<input id="sender_phone" autocomplete="off" type="text"></li>
+                <li class="jijianli"><span>寄件人地址&nbsp:</span>&nbsp<input id="sender_addr" autocomplete="off" type="text"></li>
+                <li class="jijianli"><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp收件人&nbsp:</span>&nbsp<input id="consignee" autocomplete="off" type="text"></li>
+                <li class="jijianli"><span>收件人手机&nbsp:</span>&nbsp<input id="consignee_phone" autocomplete="off" type="text"></li>
+                <li class="jijianli"><span>收件人地址&nbsp:</span>&nbsp<input id="consignee_addr" autocomplete="off" type="text"></li>
+                <li class="jijianli"><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp备注&nbsp:</span>&nbsp<input id="remaker" autocomplete="off" type="text"></li>
                 <li class="jijianli"><span>&nbsp&nbsp&nbsp</span><input id="submitbutton" type="button"  value="提交"></li>
-                <li class="chaxunli"><span>&nbsp&nbsp&nbsp物流单号&nbsp:</span>&nbsp<input id="goodsIndexCode" type="text"></li>
+                <li class="chaxunli"><span>&nbsp&nbsp&nbsp物流单号&nbsp:</span>&nbsp<input id="goodsIndexCode" autocomplete="off" type="text"></li>
                 <li class="chaxunli"><span>&nbsp&nbsp&nbsp</span><input id="chaxunbutton" type="button"  value="查询"></li>
             </ul>
         </nav>
@@ -95,20 +95,10 @@
 
 <script src="static/assets/js/demo.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="static/layui/layui.js"></script>
+<script src="static/layui/layui.all.js"></script>
 <script type="text/javascript">
     var closeFlag = 0;
-    var jijiandatas = {
-        'sender': $("#sender").val(),
-        'sender_phone': $("#sender_phone").val(),
-        'sender_addr': $("#sender_addr").val(),
-        'consignee': $("#consignee").val(),
-        'consignee_phone': $("#consignee_phone").val(),
-        'consignee_addr': $("#consignee_addr").val(),
-        'remaker': $("#remaker").val()
-    }
-    var chaxundatas = {
-        'goodsIndexCode' : $("#goodsIndexCode").val()
-    }
     $(function () {
         $("#jijian").click(function () {
             $(".chaxunli").css("display", "none");
@@ -126,10 +116,14 @@
                 $(".jijianli").css("display", "block");
                 $(".chaxunli").css("display", "block");
                 closeFlag = 0;
+                clearValue();
             }
         });
 
         $("#submitbutton").click(function () {
+            if (!checkjijianValue()) {
+                return false;
+            }
             $.ajax({
                 url : "jijianControl",
                 type: "POST",
@@ -144,13 +138,40 @@
                 },
                 success : function(result) {
                     if(result&&result.indexCode != undefined){
-                        alert(result.indexCode);
+                        layer.open({
+                            type: 1
+                            ,title: false //不显示标题栏
+                            ,closeBtn: false
+                            ,offset: '350px'
+                            ,area: '300px;'
+                            ,shade: 0.8
+                            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                            ,btn: ['我知道了']
+                            ,btnAlign: 'c'
+                            ,moveType: 1 //拖拽模式，0或者1
+                            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">您的物流单号为:' + result.indexCode + '<br>请妥善保管！<br>以方便您查询物流信息！</div>'
+                            ,success: function(layero){
+                                var btn = layero.find('.layui-layer-btn');
+                                // btn.find('.layui-layer-btn0').attr({
+                                //     href: 'http://www.baidu.com/'
+                                //     ,target: '_blank'
+                                // });
+                            }
+                        });
+                        $('body').toggleClass('open');
+                        $(".jijianli").css("display", "block");
+                        $(".chaxunli").css("display", "block");
+                        closeFlag = 0;
+                        clearValue();
                     }
                 }
             })
         })
 
         $("#chaxunbutton").click(function () {
+            if (!checkchaxunValue()) {
+                return false;
+            }
             $.ajax({
                 url : "chaxunControl",
                 type: "POST",
@@ -158,13 +179,102 @@
                     'goodsIndexCode' : $("#goodsIndexCode").val()
                 },
                 success : function(result) {
-                    if(result != undefined){
-                        console.info(result);
+                    if(result != undefined && result[0] != undefined){
+                        layer.msg('即将跳转物流信息页面！', {
+                            time: 3000 //3s后自动关闭
+                        });
+                        clearValue();
+                        window.location.replace("map.jsp");
+                    }else {
+                        layer.msg('无此物流单号信息！', {
+                            offset: '400px',
+                            anim: 2
+                        });
                     }
                 }
             })
         })
     })
+    
+    function clearValue() {
+        $("#sender").val("");
+        $("#sender_phone").val("");
+        $("#sender_addr").val("");
+        $("#consignee").val("");
+        $("#consignee_addr").val("");
+        $("#consignee_phone").val("");
+        $("#remaker").val("");
+        $("#goodsIndexCode").val("");
+    }
+    function checkjijianValue() {
+        var re = /^1\d{10}$/
+
+        if ($("#sender").val() == "") {
+            layer.msg('寄件人不可为空！', {
+                offset: '300px',
+                anim: 2
+            });
+            return false;
+        }
+        if ($("#sender_phone").val() == "") {
+            layer.msg('寄件人手机不可为空！', {
+                offset: '300px',
+                anim: 2
+            });
+            return false;
+        }else if (!re.test($("#sender_phone").val())){
+            layer.msg('寄件人手机格式不正确！', {
+                offset: '300px',
+                anim: 2
+            });
+            return false;
+        }
+        if ($("#sender_addr").val() == "") {
+            layer.msg('寄件人地址不可为空！', {
+                offset: '300px',
+                anim: 2
+            });
+            return false;
+        }
+        if ($("#consignee").val() == "") {
+            layer.msg('收件人不可为空！', {
+                offset: '300px',
+                anim: 2
+            });
+            return false;
+        }
+        if ($("#consignee_phone").val() == "") {
+            layer.msg('收件人手机不可为空！', {
+                offset: '300px',
+                anim: 2
+            });
+            return false;
+        }else if (!re.test($("#consignee_phone").val())){
+            layer.msg('收件人手机格式不正确！', {
+                offset: '300px',
+                anim: 2
+            });
+            return false;
+        }
+        if ($("#consignee_addr").val() == "") {
+            layer.msg('收件人地址不可为空！', {
+                offset: '300px',
+                anim: 2
+            });
+            return false;
+        }
+        return true;
+    }
+    function checkchaxunValue() {
+        if ($("#goodsIndexCode").val() == "") {
+            layer.msg('物流单号不可为空！', {
+                offset: '400px',
+                anim: 2
+            });
+            return false;
+        }
+        return true;
+    }
 </script>
 </body>
 </html>

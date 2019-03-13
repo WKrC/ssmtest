@@ -10,7 +10,10 @@
   <context-param>
     <!-- 该参数名是固定的，用在spring监听器中 -->
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:spring.xml</param-value>
+    <param-value>
+      classpath:spring.xml
+      classpath:springtask.xml
+    </param-value>
   </context-param>
   <!-- 配置spring的监听器：使spring一直监听web容器，对web容器中的所有的实体对象进行管理， 等价于加载ApplicationContext
       context 对象 -->

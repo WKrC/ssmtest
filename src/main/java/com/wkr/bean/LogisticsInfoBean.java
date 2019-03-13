@@ -15,4 +15,6 @@ public class LogisticsInfoBean {
     private int goodsIndexCode;
     @Column(name = "goodsPosition", length = 2000)
     private String goodsPosition;
+    @Column(name = "goodsGPSInfo", length = 2000)
+    private String goodsGPSInfo;
 }
