@@ -179,7 +179,7 @@
                     'goodsIndexCode' : $("#goodsIndexCode").val()
                 },
                 success : function(result) {
-                    if(result != undefined && result[0] != undefined){
+                    if(result != ""){
                         layer.msg('即将跳转物流信息页面！', {
                             time: 3000 //3s后自动关闭
                         });

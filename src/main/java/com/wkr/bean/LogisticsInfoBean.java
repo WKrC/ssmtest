@@ -17,4 +17,36 @@ public class LogisticsInfoBean {
     private String goodsPosition;
     @Column(name = "goodsGPSInfo", length = 2000)
     private String goodsGPSInfo;
+
+    public int getLogisticsInfoId() {
+        return logisticsInfoId;
+    }
+
+    public void setLogisticsInfoId(int logisticsInfoId) {
+        this.logisticsInfoId = logisticsInfoId;
+    }
+
+    public int getGoodsIndexCode() {
+        return goodsIndexCode;
+    }
+
+    public void setGoodsIndexCode(int goodsIndexCode) {
+        this.goodsIndexCode = goodsIndexCode;
+    }
+
+    public String getGoodsPosition() {
+        return goodsPosition;
+    }
+
+    public void setGoodsPosition(String goodsPosition) {
+        this.goodsPosition = goodsPosition;
+    }
+
+    public String getGoodsGPSInfo() {
+        return goodsGPSInfo;
+    }
+
+    public void setGoodsGPSInfo(String goodsGPSInfo) {
+        this.goodsGPSInfo = goodsGPSInfo;
+    }
 }
