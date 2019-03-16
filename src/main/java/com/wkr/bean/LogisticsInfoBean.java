@@ -17,6 +17,16 @@ public class LogisticsInfoBean {
     private String goodsPosition;
     @Column(name = "goodsGPSInfo", length = 2000)
     private String goodsGPSInfo;
+    @Column(name = "timeInfo", length = 2000)
+    private String timeInfo;
+
+    public String getTimeInfo() {
+        return timeInfo;
+    }
+
+    public void setTimeInfo(String timeInfo) {
+        this.timeInfo = timeInfo;
+    }
 
     public int getLogisticsInfoId() {
         return logisticsInfoId;
