@@ -196,18 +196,19 @@ input {
     width: 300px;
 }
 
-#submitbutton {
-    width: 100px;
+.mybutton{
+    width: auto;
     color: white;
     background-color: #4cae4c;
     cursor: pointer;
+    padding-right: 2%;
+    padding-left: 2%;
 }
-#chaxunbutton {
-    width: 100px;
-    color: white;
-    background-color: #4cae4c;
-    cursor: pointer;
+
+.mybutton:hover{
+    background-color: #3aa40c;
 }
+
 #jijian{
     top: 36%;
     left:13.5%;
