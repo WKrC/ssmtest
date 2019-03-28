@@ -4,12 +4,14 @@ $(function () {
         type: "POST",
         url: "fetchReaderControl",
         success: function (result) {
-            if(result == null) {
+            log(result);
+            if(result == null || result == "") {
                 layer.open({
                     title: '警告',
-                    content: '<div style="padding: 10px; line-height: 22px; color: black; font-weight: normal;">当前未设置阅读器！</div>',
+                    content: '<div style="text-align: center;padding: 10px; line-height: 22px; color: black; font-weight: normal;">当前未设置阅读器！</div>',
                     btn: ['立即设置'],
                     closeBtn: 0,
+                    skin: "layui-layer-molv",
                     offset: ['40%', '45%'],
                     yes: function(){
                         $(".jijianli").css("display", "none");
@@ -131,7 +133,13 @@ $("#saveReaderbutton").click(function () {
                     myOpenWindow("更新设置成功！");
                 }
                 if (result != undefined && result.resultCode == -1){
-                    myOpenWindow("设置出错！");
+                    myOpenWindow("设置出现异常！");
+                }
+                if (result != undefined && result.resultCode == -2){
+                    myOpenWindow("读写器连接失败！");
+                }
+                if (result != undefined && result.resultCode == -3){
+                    myOpenWindow("读写器写入地址失败！");
                 }
             }
         })

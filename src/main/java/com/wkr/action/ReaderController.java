@@ -1,6 +1,7 @@
 package com.wkr.action;
 
 import com.wkr.Tools.MyTools;
+import UHF.Reader18;
 import com.wkr.bean.ReaderBean;
 import com.wkr.service.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +74,30 @@ public class ReaderController {
                 List<ReaderBean> readerBeanList =  readerService.getTotalCount();
                 readerBean.setReaderHEXAddr(readerBeanList.size() + 1);
                 readerBean.setReaderSetMAC(MyTools.getLocalMac());
-                readerService.saveReaderSetting(readerBean);
-                result.put("resultCode", 1);
+                System.loadLibrary("UHF_Reader18");
+                Reader18 reader18 = new Reader18();
+                int[] input = {0, 5};
+                int[] output= reader18.AutoOpenComPort(input);
+                if (output[0] == 0) {//连接阅读器成功
+                    int[] arr_writeComAdr_temp = {0, 0, 5};
+                    arr_writeComAdr_temp[1] = readerBean.getReaderHEXAddr();
+                    int i = reader18.WriteComAdr(arr_writeComAdr_temp);
+                    if (i != 0){//读写器写入地址失败
+                        result.put("resultCode", -3);
+                    }else {//写入读写器地址成功
+                        readerService.saveReaderSetting(readerBean);
+                        result.put("resultCode", 1);
+                        input[0] = readerBean.getReaderHEXAddr();//更新阅读器地址
+                        reader18.AutoOpenComPort(input);//更新完地址后重新连接
+                        //获取标签信息
+                        int[] arr3 = {input[0], 2, 0, 1, 0x03, 0, 4, 0, 0, 0, 0, 0, 0, 0, 5};
+                        int[] getTagData = reader18.ReadCard_G2(arr3);
+                        System.out.println(Arrays.toString(getTagData));
+                    }
+                }else {//读写器连接失败
+                    result.put("resultCode", -2);
+                }
+
             }
         }catch (Exception e) {
             result.put("resultCode", -1);
