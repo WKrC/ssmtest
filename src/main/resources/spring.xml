@@ -34,7 +34,7 @@
             <props>
                 <prop key="hibernate.show_sql">true</prop><!-- 是否展示SQL -->
                 <prop key="hibernate.hbm2ddl.auto">update</prop><!-- 是否自动创建表结构 -->
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop><!-- 数据库方言 -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop><!-- 数据库方言 -->
             </props>
         </property>
         <!-- 扫描并加载注解过的实体类 -->

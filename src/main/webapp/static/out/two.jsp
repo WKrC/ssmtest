@@ -10,10 +10,10 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta http-equiv="refresh" content="4.5;url=index.jsp">
+    <meta http-equiv="refresh" content="4.5;url=one.jsp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World!</title>
-    <link rel="stylesheet" type="text/css" href="static/assets/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/base.css" />
 </head>
 <body>
 <!-- COIDEA:header START -->
@@ -25,10 +25,10 @@
 <!-- COIDEA:demo START -->
 <section id="ci-particles">
     <canvas id="canvas" ></canvas>
-    <h2 id="headline">1</h2>
+    <h2 id="headline">2</h2>
 </section>
 <!-- COIDEA:demo END -->
 
-<script src="static/assets/js/demo.js"></script>
+<script src="../assets/js/demo.js"></script>
 </body>
 </html>

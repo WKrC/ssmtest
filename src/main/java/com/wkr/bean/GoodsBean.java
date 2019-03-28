@@ -5,7 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "goods", catalog = "lunwen")
+@Table(name = "goods", catalog = "postgres")
 public class GoodsBean {
     @Id
     @GeneratedValue(generator = "goodsIdGenerator")// generator - 表示主键生成器的名称，这个属性通常和 ORM 框架相关 , 例如：Hibernate 可以指定 uuid 等主键生成方式
