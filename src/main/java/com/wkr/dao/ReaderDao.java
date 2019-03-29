@@ -9,4 +9,5 @@ public interface ReaderDao {
     void saveReaderSetting(ReaderBean readerBean);
     List<ReaderBean> getTotalCount();
     void updateReaderSetting(ReaderBean readerBean);
+    void updateReaderIsOnline(String MAC, int isOnline);
 }

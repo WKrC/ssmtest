@@ -6,28 +6,52 @@ $(function () {
         success: function (result) {
             log(result);
             if(result == null || result == "") {
-                layer.open({
-                    title: '警告',
-                    content: '<div style="text-align: center;padding: 10px; line-height: 22px; color: black; font-weight: normal;">当前未设置阅读器！</div>',
-                    btn: ['立即设置'],
-                    closeBtn: 0,
-                    skin: "layui-layer-molv",
-                    offset: ['40%', '45%'],
-                    yes: function(){
-                        $(".jijianli").css("display", "none");
-                        $(".chaxunli").css("display", "none");
-                        layer.closeAll();
-                        $('body').toggleClass('open');
-                        closeFlag = 3;
-                    }
-                })
-
+                tipSetReader();
             }
         }
     })
+    window.setInterval(ReaderIsOnline, 30000);//每隔三十秒检查
 })
-
-
+function tipSetReader() {
+    layer.open({
+        title: '警告',
+        content: '<div style="text-align: center;padding: 10px; line-height: 22px; color: black; font-weight: normal;">当前未设置阅读器！</div>',
+        btn: ['立即设置'],
+        closeBtn: 0,
+        skin: "layui-layer-molv",
+        offset: ['40%', '45%'],
+        yes: function(){
+            $(".jijianli").css("display", "none");
+            $(".chaxunli").css("display", "none");
+            layer.closeAll();
+            $('body').toggleClass('open');
+            closeFlag = 3;
+        }
+    })
+}
+//获取阅读器状态
+function ReaderIsOnline() {
+    var runFlag = true;
+    $.ajax({
+        type: "POST",
+        url:"ReaderIsOnline",
+        success: function (data) {
+            if (data != undefined  && data.resultCode == 0){
+                myOpenWindow("阅读器不在线！请确保连通阅读器后刷新页面！");
+                runFlag = false;
+            }
+            if (data != undefined  && data.resultCode == -1){
+                myOpenWindow("获取阅读器信息异常！");
+                runFlag = false;
+            }
+            if (data != undefined  && data.resultCode == -2 && closeFlag != 3){
+                tipSetReader();
+                runFlag = false;
+            }
+        }
+    })
+    return runFlag;
+}
 var closeFlag = 0;
 var map = new AMap.Map("container", {
     resizeEnable: true
@@ -280,6 +304,7 @@ function checkchaxunValue() {
 
 //提示弹出层
 function myOpenWindow(msg) {
+    layer.closeAll();
     layer.open({
         title: '来自程序猿的提示',
         content: '<div style="text-align: center;padding: 10px; line-height: 22px; color: black; font-weight: normal;">' + msg + '</div>',

@@ -2,8 +2,9 @@ package com.wkr.dao.Impl;
 
 import com.wkr.bean.ReaderBean;
 import com.wkr.dao.ReaderDao;
-import org.hibernate.FlushMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -51,5 +52,16 @@ public class ReaderDaoImpl implements ReaderDao {
         //template.getSessionFactory().openSession().setFlushMode(FlushMode.AUTO);//用于破解数据库只读
         //template.getSessionFactory().getCurrentSession().clear();
         template.update(readerBean);
+    }
+
+    @Override
+    public void updateReaderIsOnline(String MAC, int isOnline) {
+        Session session = template.getSessionFactory().openSession();
+        Query query = session.createQuery("update ReaderBean set isOnline = ? where ReaderSetMAC = ?");
+        query.setParameter(0, isOnline);
+        query.setParameter(1, MAC);
+        query.executeUpdate();
+        session.flush();
+        session.close();
     }
 }

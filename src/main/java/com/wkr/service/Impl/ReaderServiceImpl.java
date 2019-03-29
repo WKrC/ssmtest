@@ -33,4 +33,9 @@ public class ReaderServiceImpl implements ReaderService {
     public void updateReaderSetting(ReaderBean readerBean) {
         readerDao.updateReaderSetting(readerBean);
     }
+
+    @Override
+    public void updateReaderIsOnline(String MAC, int isOnline) {
+        readerDao.updateReaderIsOnline(MAC, isOnline);
+    }
 }

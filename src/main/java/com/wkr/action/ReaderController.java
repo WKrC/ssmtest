@@ -48,7 +48,7 @@ public class ReaderController {
      * @param readerBean 阅读器实体类对象
      * @return 结果码
      */
-    @RequestMapping(value = "saveOrUpdateReaderSettingController", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveOrUpdateReaderSettingController", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> saveOrUpdateReaderSettingController(ReaderBean readerBean) {
         Map<String, Object> result = new HashMap<>();
@@ -85,6 +85,7 @@ public class ReaderController {
                     if (i != 0){//读写器写入地址失败
                         result.put("resultCode", -3);
                     }else {//写入读写器地址成功
+                        readerBean.setIsOnline(1);
                         readerService.saveReaderSetting(readerBean);
                         result.put("resultCode", 1);
                         input[0] = readerBean.getReaderHEXAddr();//更新阅读器地址
@@ -102,6 +103,30 @@ public class ReaderController {
         }catch (Exception e) {
             result.put("resultCode", -1);
             e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/ReaderIsOnline",  method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> ReaderIsOnline(){
+        Map<String, Object> result = new HashMap<>();
+        try {
+            ReaderBean temp = new ReaderBean();
+            temp.setReaderSetMAC(MyTools.getLocalMac());
+            ReaderBean readerBean = readerService.fetchReaderByMAC(temp);
+            if (readerBean == null) {
+                result.put("resultCode", -2);//阅读器未设置
+            }else {
+                if (readerBean.getIsOnline() == 1) {
+                    result.put("resultCode", 1);//阅读器在线
+                } else {
+                    result.put("resultCode", 0);//阅读器不在线
+                }
+            }
+
+        } catch (Exception e) {
+            result.put("resultCode", -1);
         }
         return result;
     }

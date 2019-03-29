@@ -1,5 +1,8 @@
 package com.wkr.bean;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,6 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Reader", catalog = "postgres")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="defaultCache")
 public class ReaderBean {
     @Id
     private int ReaderHEXAddr;
@@ -18,6 +22,8 @@ public class ReaderBean {
     private String ReaderGPS;
     @Column(name = "readersetmac")
     private String ReaderSetMAC;
+    @Column(name = "isonline")
+    private int isOnline;
 
     public int getReaderHEXAddr() {
         return ReaderHEXAddr;
@@ -57,5 +63,13 @@ public class ReaderBean {
 
     public void setReaderSetMAC(String ReadersetMAC) {
         ReaderSetMAC = ReadersetMAC;
+    }
+
+    public int getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(int isOnline) {
+        this.isOnline = isOnline;
     }
 }
