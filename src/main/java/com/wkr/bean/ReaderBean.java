@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="defaultCache")
 public class ReaderBean {
     @Id
-    private int ReaderHEXAddr;
+    private Integer ReaderHEXAddr;
     @Column(name = "readername")
     private String ReaderName;
     @Column(name = "readeraddress")
@@ -23,13 +23,13 @@ public class ReaderBean {
     @Column(name = "readersetmac")
     private String ReaderSetMAC;
     @Column(name = "isonline")
-    private int isOnline;
+    private Integer isOnline;
 
-    public int getReaderHEXAddr() {
+    public Integer getReaderHEXAddr() {
         return ReaderHEXAddr;
     }
 
-    public void setReaderHEXAddr(int readerHEXAddr) {
+    public void setReaderHEXAddr(Integer readerHEXAddr) {
         ReaderHEXAddr = readerHEXAddr;
     }
 
@@ -65,11 +65,11 @@ public class ReaderBean {
         ReaderSetMAC = ReadersetMAC;
     }
 
-    public int getIsOnline() {
+    public Integer getIsOnline() {
         return isOnline;
     }
 
-    public void setIsOnline(int isOnline) {
+    public void setIsOnline(Integer isOnline) {
         this.isOnline = isOnline;
     }
 }

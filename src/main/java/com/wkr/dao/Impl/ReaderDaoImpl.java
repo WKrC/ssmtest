@@ -20,6 +20,10 @@ public class ReaderDaoImpl implements ReaderDao {
     //获得hibernate对于一些SQL语句的封装
     private HibernateTemplate template;
 
+    static {
+
+    }
+
     @Autowired//属于Spring 的org.springframework.beans.factory.annotation包下,可用于为类的属性、构造器、方法进行注值
     public ReaderDaoImpl(SessionFactory sessionFactory) {
         this.template = new HibernateTemplate(sessionFactory);
@@ -27,7 +31,6 @@ public class ReaderDaoImpl implements ReaderDao {
 
     @Override
     public ReaderBean fetchReaderByMAC(ReaderBean readerBean) {
-       // template.getSessionFactory().openSession().setFlushMode(FlushMode.AUTO);//用于破解数据库只读
         List<ReaderBean> resultList = template.findByExample(readerBean);
         if (resultList.size() > 0){
             return resultList.get(0);
@@ -38,7 +41,6 @@ public class ReaderDaoImpl implements ReaderDao {
 
     @Override
     public void saveReaderSetting(ReaderBean readerBean) {
-       // template.getSessionFactory().openSession().setFlushMode(FlushMode.AUTO);//用于破解数据库只读
         template.save(readerBean);
     }
 
@@ -49,19 +51,21 @@ public class ReaderDaoImpl implements ReaderDao {
 
     @Override
     public void updateReaderSetting(ReaderBean readerBean) {
-        //template.getSessionFactory().openSession().setFlushMode(FlushMode.AUTO);//用于破解数据库只读
-        //template.getSessionFactory().getCurrentSession().clear();
         template.update(readerBean);
     }
 
     @Override
-    public void updateReaderIsOnline(String MAC, int isOnline) {
+    public void updateReaderIsOnline(String MAC, Integer isOnline) {
+        //openSession 每次使用都是打开一个新的session，使用完需要调用close方法关闭session
+        //getCurrentSession 是获取当前session对象，连续使用多次时，得到的session都是同一个对象
         Session session = template.getSessionFactory().openSession();
-        Query query = session.createQuery("update ReaderBean set isOnline = ? where ReaderSetMAC = ?");
-        query.setParameter(0, isOnline);
-        query.setParameter(1, MAC);
+        Query query = session.createQuery("update ReaderBean set isOnline =: isOnline where ReaderSetMAC =: MAC");
+        query.setInteger("isOnline", isOnline);
+        query.setString("MAC", MAC);
+        //使用getCurrentSession 异常：Transaction already active事务已经开启
+        session.beginTransaction();//开启事务 猜想是spring 配置的事务作用域并没有达到 session导致
         query.executeUpdate();
-        session.flush();
+        session.getTransaction().commit();//commit 隐式调用了session.flush() 不要再显式调用否则报错
         session.close();
     }
 }

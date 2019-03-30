@@ -13,8 +13,10 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <!-- 扫描所有的需要依赖注入的实例变量 -->
-    <context:component-scan base-package="com.wkr"></context:component-scan>
+    <!-- 扫描除了Controller层的依赖注入的实例变量 -->
+    <context:component-scan base-package="com.wkr">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
     <!-- 引入数据库属性文件 -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
     <!-- druid数据源 -->
@@ -39,13 +41,13 @@
                 <!-- 数据库方言 -->
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
                 <!-- 配置启用二级缓存 -->
-                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <!--<prop key="hibernate.cache.use_second_level_cache">true</prop>-->
                 <!-- 配置使用查询缓存 -->
-                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <!--<prop key="hibernate.cache.use_query_cache">true</prop>-->
                 <!-- 配置二级缓存的提供商 -->
-                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <!--<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>-->
                 <!-- 加载缓存所需配置文件 -->
-                <prop key="hibernate.net.sf.ehcache.configurationResourceName">classpath:ehcache.xml</prop>
+                <!--<prop key="hibernate.net.sf.ehcache.configurationResourceName">classpath:ehcache.xml</prop>-->
             </props>
         </property>
         <!-- 扫描并加载注解过的实体类 -->
@@ -61,7 +63,7 @@
         <!-- hibernate报的只读权限的问题添加这个 -->
         <property name="checkWriteOperations" value="false"/>
         <!-- 使用查询缓存 -->
-        <property name="cacheQueries" value="true"/>
+        <!--<property name="cacheQueries" value="true"/>-->
     </bean>
 
     <!-- 配置事务管理器 -->
@@ -69,8 +71,7 @@
         <!-- 注入SessionFactory -->
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-     <!--注解方式配置事务：在使用事务处理的方法上添加注解 @Transactional 即可 -->
+    <!--注解方式配置事务：在使用事务处理的方法上添加注解 @Transactional 即可 -->
     <!-- 开启事务扫描，采用注解方式 -->
     <tx:annotation-driven transaction-manager="transactionManager" />
-
 </beans>

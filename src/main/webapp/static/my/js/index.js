@@ -10,6 +10,7 @@ $(function () {
             }
         }
     })
+    ReaderIsOnline();
     window.setInterval(ReaderIsOnline, 30000);//每隔三十秒检查
 })
 function tipSetReader() {
@@ -36,8 +37,11 @@ function ReaderIsOnline() {
         type: "POST",
         url:"ReaderIsOnline",
         success: function (data) {
+            if (data != undefined  && data.resultCode == 1){
+                layer.closeAll();
+            }
             if (data != undefined  && data.resultCode == 0){
-                myOpenWindow("阅读器不在线！请确保连通阅读器后刷新页面！");
+                OpenNoCloseWindow("阅读器不在线！请确保连通阅读器！");
                 runFlag = false;
             }
             if (data != undefined  && data.resultCode == -1){
@@ -157,13 +161,16 @@ $("#saveReaderbutton").click(function () {
                     myOpenWindow("更新设置成功！");
                 }
                 if (result != undefined && result.resultCode == -1){
-                    myOpenWindow("设置出现异常！");
+                    myOpenWindow("设置异常！");
                 }
                 if (result != undefined && result.resultCode == -2){
-                    myOpenWindow("读写器连接失败！");
+                    myOpenWindow("读写器连接失败！请确保连通阅读器！");
                 }
                 if (result != undefined && result.resultCode == -3){
                     myOpenWindow("读写器写入地址失败！");
+                }
+                if (result != undefined && result.resultCode == -4){
+                    myOpenWindow("阅读器不在线！更新失败！");
                 }
             }
         })
@@ -173,6 +180,8 @@ $("#saveReaderbutton").click(function () {
 $("#ReaderAddress").focus(function () {
     $("#ReaderGPS").val("");
 })
+
+//寄件信息提交
 $("#submitbutton").click(function () {
     if (!checkjijianValue()) {
         return false;
@@ -310,5 +319,18 @@ function myOpenWindow(msg) {
         content: '<div style="text-align: center;padding: 10px; line-height: 22px; color: black; font-weight: normal;">' + msg + '</div>',
         skin: "layui-layer-molv",
         offset: ['40%', '45%']
+    });
+}
+
+//错误提示弹出层
+function OpenNoCloseWindow(msg) {
+    layer.closeAll();
+    layer.open({
+        title: '来自程序猿的提示',
+        content: '<div style="text-align: center;padding: 10px; line-height: 22px; color: black; font-weight: normal;">' + msg + '</div>',
+        skin: "layui-layer-molv",
+        offset: ['40%', '45%'],
+        closeBtn: 0,
+        btn: null
     });
 }

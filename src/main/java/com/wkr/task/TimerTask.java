@@ -30,7 +30,7 @@ public class TimerTask {
                 int[] output= reader18.AutoOpenComPort(input);
                 if (output[0] == 0){ //阅读器连接成功
                     //读写标签部分代码
-                } else {//阅读器连接失败更新阅读器状态
+                } else if (output[0] != 0 && readerBean.getIsOnline() != 0){//阅读器连接失败更新阅读器状态
                     readerService.updateReaderIsOnline(readerBean.getReaderSetMAC(), 0);
                 }
             }
