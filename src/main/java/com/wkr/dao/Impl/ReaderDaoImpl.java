@@ -62,7 +62,7 @@ public class ReaderDaoImpl implements ReaderDao {
         Query query = session.createQuery("update ReaderBean set isOnline =: isOnline where ReaderSetMAC =: MAC");
         query.setInteger("isOnline", isOnline);
         query.setString("MAC", MAC);
-        //使用getCurrentSession 异常：Transaction already active事务已经开启
+        //使用getCurrentSession 会出现异常：Transaction already active事务已经开启
         session.beginTransaction();//开启事务 猜想是spring 配置的事务作用域并没有达到 session导致
         query.executeUpdate();
         session.getTransaction().commit();//commit 隐式调用了session.flush() 不要再显式调用否则报错

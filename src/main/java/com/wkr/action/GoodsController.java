@@ -1,5 +1,6 @@
 package com.wkr.action;
 
+import com.wkr.Tools.MyTools;
 import com.wkr.bean.GoodsBean;
 import com.wkr.bean.LogisticsInfoBean;
 import com.wkr.dao.GoodsDao;
@@ -28,18 +29,20 @@ public class GoodsController {
     @RequestMapping(value = "/jijianControl", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> jijianControl(GoodsBean goodsBean){
-        int indexCode = (int)(Math.random()*10000000 + 1000000);
-        goodsBean.setGoodsIndexCode(String.valueOf(indexCode));
+        Long indexCode = Long.valueOf(new Date().getTime() + "" + (int)(Math.random()*10));
+        String HEXIndexCode = MyTools.TenToSixteen(indexCode);
+        goodsBean.setGoodsIndexCode(HEXIndexCode);
+        //写入标签EPC号
         goodsService.saveGoods(goodsBean);
         LogisticsInfoBean logisticsInfoBean = new LogisticsInfoBean();
-        logisticsInfoBean.setGoodsIndexCode(indexCode);//运输开始没到就近的集散中心
+        logisticsInfoBean.setGoodsIndexCode(HEXIndexCode);//运输开始没到就近的集散中心
         logisticsInfoBean.setGoodsPosition("已交由寄件员处理");
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
         logisticsInfoBean.setTimeInfo(dateFormat.format(date));
         logisticsService.insert(logisticsInfoBean);
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("indexCode", indexCode);
+        resultMap.put("indexCode", HEXIndexCode);
         return resultMap;
     }
 

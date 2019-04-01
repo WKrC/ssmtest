@@ -2,6 +2,7 @@ package com.wkr.action;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.wkr.Tools.MyTools;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apiguardian.api.API;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -9,8 +10,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import javax.xml.ws.Response;
 import java.io.*;
 import java.net.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -152,5 +152,25 @@ public class Tests {
             e.printStackTrace();
         }
     }
+    @Test
+    public void ArrayLine() {
+        Integer a[] = {1};
+        Integer b[] = {2, 0, 0};
+        Integer c[] = {3, 0, 70, 0, 0, 0, 0, 0, 0, 0, 5};
+        List list = new ArrayList(Arrays.asList(a));
+        list.addAll(Arrays.asList(b));
+        list.addAll(Arrays.asList(c));
+        Integer[] d = new Integer[a.length + b.length + c.length];
+        list.toArray(d);
+        int[] e = ArrayUtils.toPrimitive(d);
+        System.out.println(Arrays.toString(d));
+        System.out.println("----------------------");
+        System.out.println(Arrays.toString(e));
+
+        Long i = Long.valueOf(new Date().getTime() + "" + (int)(Math.random()*10));
+        System.out.println("十进制  ：" + i);
+        System.out.println("十六进制：" + MyTools.TenToSixteen(i));
+    }
+
 
 }

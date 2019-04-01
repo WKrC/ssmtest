@@ -27,22 +27,20 @@ public class LogisticsDaoImpl implements LogisticsDao {
 
     @Override
     public List<LogisticsInfoBean> fetchGoodsByGoodsIndexCode(String goodsIndexCode) {
-        template.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);//用于破解数据库只读
+        //template.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);//用于破解数据库只读
         LogisticsInfoBean logisticsInfoBean = new LogisticsInfoBean();
-        logisticsInfoBean.setGoodsIndexCode(Integer.valueOf(goodsIndexCode));
+        logisticsInfoBean.setGoodsIndexCode(goodsIndexCode);
         List<LogisticsInfoBean> logisticsInfoBeanList = template.findByExample(logisticsInfoBean);
         return logisticsInfoBeanList;
     }
 
     @Override
     public void updateGoods(LogisticsInfoBean logisticsInfoBean) {
-        template.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);//用于破解数据库只读
         template.update(logisticsInfoBean);
     }
 
     @Override
     public void insert(LogisticsInfoBean logisticsInfoBean) {
-        template.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);//用于破解数据库只读
         template.save(logisticsInfoBean);//调用
     }
 }

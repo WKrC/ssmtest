@@ -45,7 +45,7 @@
                 <!-- 配置使用查询缓存 -->
                 <!--<prop key="hibernate.cache.use_query_cache">true</prop>-->
                 <!-- 配置二级缓存的提供商 -->
-                <!--<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>-->
+                <!--<prop key="hibernate.cache.region.factory_class"> org.hibernate.cache.EhCacheRegionFactory</prop>-->
                 <!-- 加载缓存所需配置文件 -->
                 <!--<prop key="hibernate.net.sf.ehcache.configurationResourceName">classpath:ehcache.xml</prop>-->
             </props>
