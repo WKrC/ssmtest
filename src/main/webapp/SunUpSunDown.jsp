@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <title>物流查询</title>
