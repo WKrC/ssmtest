@@ -10,8 +10,8 @@ $(function () {
             }
         }
     })
-    ReaderIsOnline();
-    window.setInterval(ReaderIsOnline, 30000);//每隔三十秒检查
+    //ReaderIsOnline();
+    //window.setInterval(ReaderIsOnline, 30000);//每隔三十秒检查
 })
 function tipSetReader() {
     layer.open({
@@ -318,7 +318,7 @@ function myOpenWindow(msg) {
         title: '来自程序猿的提示',
         content: '<div style="text-align: center;padding: 10px; line-height: 22px; color: black; font-weight: normal;">' + msg + '</div>',
         skin: "layui-layer-molv",
-        offset: ['40%', '45%']
+        offset: ['40%', '43.5%']
     });
 }
 

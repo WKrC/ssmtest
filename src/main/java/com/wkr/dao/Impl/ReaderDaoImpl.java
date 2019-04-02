@@ -20,9 +20,6 @@ public class ReaderDaoImpl implements ReaderDao {
     //获得hibernate对于一些SQL语句的封装
     private HibernateTemplate template;
 
-    static {
-
-    }
 
     @Autowired//属于Spring 的org.springframework.beans.factory.annotation包下,可用于为类的属性、构造器、方法进行注值
     public ReaderDaoImpl(SessionFactory sessionFactory) {

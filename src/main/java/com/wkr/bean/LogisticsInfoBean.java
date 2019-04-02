@@ -1,13 +1,11 @@
 package com.wkr.bean;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "logisticsinfo", catalog = "lunwen")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="defaultCache")
 public class LogisticsInfoBean {
     @Id
     @GeneratedValue(generator = "logisticsInfoIdGenerator")// generator - 表示主键生成器的名称，这个属性通常和 ORM 框架相关 , 例如：Hibernate 可以指定 uuid 等主键生成方式

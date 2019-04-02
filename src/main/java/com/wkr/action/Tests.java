@@ -2,6 +2,7 @@ package com.wkr.action;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.wkr.Tools.MyTools;
+import com.wkr.bean.GoodsBean;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apiguardian.api.API;
 import org.junit.jupiter.api.Test;
@@ -175,6 +176,13 @@ public class Tests {
         System.out.println(Integer.valueOf(String.valueOf(Long.parseLong("18", 16))));
 
     }
-
+    @Test
+    public void mmm(){
+        GoodsBean goodsBean = new GoodsBean();
+        Class c = goodsBean.getClass();
+        Object o = new GoodsBean();
+        //GoodsBean gg = (c)o;
+        MyTools.log(c);
+    }
 
 }
