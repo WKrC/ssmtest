@@ -15,7 +15,7 @@ public class LogisticsServiceImpl implements LogisticsService {
     LogisticsDao logisticsDao;
 
     @Override
-    public List<LogisticsInfoBean> fetchGoodsByGoodsIndexCode(String goodsIndexCode) {
+    public LogisticsInfoBean fetchGoodsByGoodsIndexCode(String goodsIndexCode) {
         return logisticsDao.fetchGoodsByGoodsIndexCode(goodsIndexCode);
     }
 

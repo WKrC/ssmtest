@@ -12,7 +12,7 @@ public interface LogisticsService {
      * @param goodsIndexCode 物流编号
      * @return
      */
-    List<LogisticsInfoBean> fetchGoodsByGoodsIndexCode(String goodsIndexCode);
+    LogisticsInfoBean fetchGoodsByGoodsIndexCode(String goodsIndexCode);
 
     /**
      * 更新物流信息

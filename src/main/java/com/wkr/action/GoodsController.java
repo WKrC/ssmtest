@@ -1,11 +1,15 @@
 package com.wkr.action;
 
+import UHF.Reader18;
 import com.wkr.Tools.MyTools;
 import com.wkr.bean.GoodsBean;
 import com.wkr.bean.LogisticsInfoBean;
+import com.wkr.bean.ReaderBean;
 import com.wkr.dao.GoodsDao;
 import com.wkr.service.GoodsService;
 import com.wkr.service.LogisticsService;
+import com.wkr.service.ReaderService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,33 +30,66 @@ public class GoodsController {
     @Autowired
     LogisticsService logisticsService;
 
+    @Autowired
+    ReaderService readerService;
+
     @RequestMapping(value = "/jijianControl", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> jijianControl(GoodsBean goodsBean){
-        Long indexCode = Long.valueOf(new Date().getTime() + "" + (int)(Math.random()*10));
-        String HEXIndexCode = MyTools.TenToSixteen(indexCode);
-        goodsBean.setGoodsIndexCode(HEXIndexCode);
-        //写入标签EPC号
-        goodsService.saveGoods(goodsBean);
-        LogisticsInfoBean logisticsInfoBean = new LogisticsInfoBean();
-        logisticsInfoBean.setGoodsIndexCode(HEXIndexCode);//运输开始没到就近的集散中心
-        logisticsInfoBean.setGoodsPosition("已交由寄件员处理");
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
-        logisticsInfoBean.setTimeInfo(dateFormat.format(date));
-        logisticsService.insert(logisticsInfoBean);
+        System.loadLibrary("UHF_Reader18");
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("indexCode", HEXIndexCode);
+        Reader18 reader18 = new Reader18();
+        ReaderBean temp = new ReaderBean();
+        try {
+            temp.setReaderSetMAC(MyTools.getLocalMac());
+            ReaderBean readerBean = readerService.fetchReaderByMAC(temp);
+            if (readerBean != null) {
+                int[] AutoOpenComPort_input_parameter = {readerBean.getReaderHEXAddr(), 5};
+                int[] AutoOpenComPort_output_parameter= reader18.AutoOpenComPort(AutoOpenComPort_input_parameter);
+                if (AutoOpenComPort_output_parameter[0] == 0) {//阅读器在线
+                    String indexCode = MyTools.getIndexCode();
+                    goodsBean.setGoodsIndexCode(indexCode);
+                    goodsService.saveGoods(goodsBean);
+                    LogisticsInfoBean logisticsInfoBean = new LogisticsInfoBean();
+                    logisticsInfoBean.setGoodsIndexCode(indexCode);
+                    logisticsInfoBean.setGoodsPosition("已交由寄件员处理");//运输开始没到就近的集散中心
+                    logisticsInfoBean.setTimeInfo(MyTools.getDateString());
+                    logisticsService.insert(logisticsInfoBean);
+                    //写入标签EPC号
+                    int[] Reader_Data = {readerBean.getReaderHEXAddr(), 0, 0, 0, 0, 8};
+                    int[] EPCData = MyTools.StringToArray(indexCode);
+                    int[] lastData = {AutoOpenComPort_output_parameter[3]};
+                    List WriteEPC_G2_Input_List = new ArrayList(Arrays.asList(Reader_Data));
+                    WriteEPC_G2_Input_List.addAll(Arrays.asList(EPCData));
+                    WriteEPC_G2_Input_List.addAll(Arrays.asList(lastData));
+                    Integer[] WriteEPC_G2_Input_Integer = new Integer[Reader_Data.length + EPCData.length + lastData.length];
+                    WriteEPC_G2_Input_List.toArray(WriteEPC_G2_Input_Integer);
+                    int[] WriteEPC_G2_Input_Parameter = ArrayUtils.toPrimitive(WriteEPC_G2_Input_Integer);
+                    int[] WriteEPC_G2_Outputput_Parameter = reader18.WriteEPC_G2(WriteEPC_G2_Input_Parameter);
+                    if (WriteEPC_G2_Outputput_Parameter[0] == 0) {
+                        resultMap.put("indexCode", indexCode);//返回EPC号即物流号
+                    } else {
+                        resultMap.put("indexCode", -3);//设置EPC号失败
+                    }
+                } else {
+                    resultMap.put("indexCode", -2);//阅读器不在线
+                }
+            } else {
+                resultMap.put("indexCode", 0);//阅读器未设置
+            }
+        } catch (Exception e) {
+            resultMap.put("indexCode", -1);
+        }
         return resultMap;
     }
 
     @RequestMapping(value = "/chaxunControl", method = RequestMethod.POST)
     @ResponseBody
     public LogisticsInfoBean chaxunControl(String goodsIndexCode, HttpServletRequest request) {
-        List<LogisticsInfoBean> logisticsInfoBeanList = logisticsService.fetchGoodsByGoodsIndexCode(goodsIndexCode);
-        if (logisticsInfoBeanList != null && logisticsInfoBeanList.size() > 0) {
+        LogisticsInfoBean logisticsInfoBean = logisticsService.fetchGoodsByGoodsIndexCode(goodsIndexCode);
+        if (logisticsInfoBean != null) {
             request.getSession().setAttribute("goodsIndexCode", goodsIndexCode);
-            return logisticsInfoBeanList.get(0);
+            return logisticsInfoBean;
         }else {
             return  null;
         }
@@ -62,8 +99,7 @@ public class GoodsController {
     @ResponseBody
     public Map<String, List<String>> fetchLogisticsInfoController(HttpServletRequest request) {
         String goodsIndexCode = request.getSession().getAttribute("goodsIndexCode").toString();
-        List<LogisticsInfoBean> logisticsInfoBeanList =  logisticsService.fetchGoodsByGoodsIndexCode(goodsIndexCode);
-        LogisticsInfoBean logisticsInfoBean = logisticsInfoBeanList.get(0);
+        LogisticsInfoBean logisticsInfoBean =  logisticsService.fetchGoodsByGoodsIndexCode(goodsIndexCode);
         Map<String, List<String>> map = new HashMap<>();
         List<String> GPSList = new ArrayList<>();
         List<String> PositionList = new ArrayList<>();

@@ -3,6 +3,10 @@ package com.wkr.Tools;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MyTools {
     public static String getLocalMac() throws Exception {
@@ -26,17 +30,48 @@ public class MyTools {
         return sb.toString().toUpperCase();
     }
 
-    public static String TenToSixteen(Long indexCode) {
+    public static String SixteenToTen(int[] input_Parameter) {
         StringBuffer result = new StringBuffer();
-        String indexCode_String = indexCode.toString();
-        char[] indexCode_char = indexCode_String.toCharArray();
-        for (int j = 0; j < indexCode_char.length; j += 2) {
-            result.append(Long.toHexString(new Long(String.valueOf(indexCode_char[j]) + String.valueOf(indexCode_char[j + 1]))));
+        for (int j = 0; j < input_Parameter.length; j++) {
+            if (input_Parameter[j] >= 0 && input_Parameter[j] <= 9) {
+                result.append("0" + input_Parameter[j]);
+            }else {
+                result.append(Long.toHexString(new Long(input_Parameter[j])));
+            }
         }
         return result.toString().toUpperCase();
     }
 
     public static void log(Object o) {
-        System.out.print(o + " ");
+        System.out.println(o);
+    }
+
+    public static String getDateString() {
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+        return dateFormat.format(date);
+    }
+
+    public static String getIndexCode() {
+        return (new Date().getTime() + "" + (int)(Math.random()*1000) + 100);//16位数
+    }
+
+    public static int[] StringToArray(String parameter) {
+        int[] result = new int[8];
+        int x = 0;
+        char[] parameter_char = parameter.toCharArray();
+        for (int i = 0; i < parameter_char.length; i += 2) {
+            result[x] = Integer.valueOf(String.valueOf(parameter_char[i] + "" + parameter_char[i + 1]));
+            x++;
+        }
+        return result;
+    }
+
+    public static String ArrayToString(Integer[] parameter) {
+        StringBuffer result = new StringBuffer();
+        for (int i = 1; i < parameter.length; i++) {
+            result.append(parameter[i]);
+        }
+        return result.toString();
     }
 }

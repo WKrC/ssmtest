@@ -167,9 +167,13 @@ public class Tests {
         System.out.println("----------------------");
         System.out.println(Arrays.toString(e));
 
-        Long i = Long.valueOf(new Date().getTime() + "" + (int)(Math.random()*10));
+        Long i = Long.valueOf(new Date().getTime() + "" + (int)(Math.random()*1000 + 100));
         System.out.println("十进制  ：" + i);
-        System.out.println("十六进制：" + MyTools.TenToSixteen(i));
+        int[] x = {21, 84, 18, 25, 64, 7, 132, 0};
+        System.out.println("EPC号  ：1554121940078400");
+        System.out.println(Arrays.toString(MyTools.StringToArray("1554123486483876")));
+        System.out.println(Integer.valueOf(String.valueOf(Long.parseLong("18", 16))));
+
     }
 
 

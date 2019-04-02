@@ -2,6 +2,7 @@ package com.wkr.task;
 
 import UHF.Reader18;
 import com.wkr.Tools.MyTools;
+import com.wkr.bean.LogisticsInfoBean;
 import com.wkr.bean.ReaderBean;
 import com.wkr.service.LogisticsService;
 import com.wkr.service.ReaderService;
@@ -102,7 +103,9 @@ public class TimerTask {
                          * 其余 ：数据
                          */
                         int[] ReadCard_G2_Output_Parameter = reader18.ReadCard_G2(ReadCard_G2_Input_Parameter);
-                        if (ReadCard_G2_Output_Parameter[ReadCard_G2_Output_Parameter.length - 1] != 1) {//不能是1
+                        if (ReadCard_G2_Output_Parameter[ReadCard_G2_Output_Parameter.length - 1] !=
+                                Integer.valueOf(String.valueOf(Long.parseLong(String.valueOf(readerBean.getReaderHEXAddr()), 16)))) {
+                            //数据库的数据是16进制的  阅读器获得数据是10进制的  要将数据库的16进制转换为10进制
                             //说明未入库
                             int[] otherData_Write = {3, 0, 8, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, AutoOpenComPort_output_parameter[3]};
                             List WriteCard_G2_Input_List = new ArrayList(Arrays.asList(ReaderHEXAddr));
@@ -133,7 +136,15 @@ public class TimerTask {
                             int[] WriteCard_G2_Output_Parameter = reader18.WriteCard_G2(WriteCard_G2_Input_Parameter);
                             if (WriteCard_G2_Output_Parameter[0] == 0) {
                                 //入库
-                                logisticsService.fetchGoodsByGoodsIndexCode("");
+                                String indexCode = MyTools.ArrayToString(EPCData);
+                                LogisticsInfoBean logisticsInfoBean  = logisticsService.fetchGoodsByGoodsIndexCode(indexCode);
+                                String nowGPS = logisticsInfoBean.getGoodsGPSInfo() + ";" + readerBean.getReaderGPS();
+                                logisticsInfoBean.setGoodsGPSInfo(nowGPS);
+                                String nowAddr = logisticsInfoBean.getGoodsPosition() + ";" + readerBean.getReaderName();
+                                logisticsInfoBean.setGoodsPosition(nowAddr);
+                                String nowDate = logisticsInfoBean.getTimeInfo() + ";" + MyTools.getDateString();
+                                logisticsInfoBean.setTimeInfo(nowDate);
+                                logisticsService.updateGoods(logisticsInfoBean);
                             }
                         }
                     }

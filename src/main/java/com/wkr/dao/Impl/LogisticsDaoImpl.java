@@ -26,12 +26,15 @@ public class LogisticsDaoImpl implements LogisticsDao {
 
 
     @Override
-    public List<LogisticsInfoBean> fetchGoodsByGoodsIndexCode(String goodsIndexCode) {
+    public LogisticsInfoBean fetchGoodsByGoodsIndexCode(String goodsIndexCode) {
         //template.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);//用于破解数据库只读
         LogisticsInfoBean logisticsInfoBean = new LogisticsInfoBean();
         logisticsInfoBean.setGoodsIndexCode(goodsIndexCode);
         List<LogisticsInfoBean> logisticsInfoBeanList = template.findByExample(logisticsInfoBean);
-        return logisticsInfoBeanList;
+        if (logisticsInfoBeanList.size() > 0) {
+            return logisticsInfoBeanList.get(0);
+        }
+        return null;
     }
 
     @Override
