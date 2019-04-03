@@ -263,7 +263,6 @@ function clearValue() {
     $("#consignee_phone").val("");
     $("#remaker").val("");
     $("#goodsIndexCode").val("");
-
 }
 //输入检查
 function checkjijianValue() {

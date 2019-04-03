@@ -1,3 +1,35 @@
+
+function checkchaxunValue() {
+    if ($("#goodsIndexCode").val() == "") {
+        myOpenWindow('物流单号不可为空！');
+        return false;
+    }
+    return true;
+}
+//查询按钮
+$("#querybutton").click(function () {
+    if (checkchaxunValue()) {
+        $.ajax({
+            url: "QueryControl",
+            type: "POST",
+            async: false,
+            data: {
+                'goodsIndexCode': $("#goodsIndexCode").val()
+            },
+            success: function (result) {
+                if (result != "") {
+                    layer.msg('即将跳转物流信息页面！', {
+                        time: 3000 //3s后自动关闭
+                    });
+                    window.location.replace("Map.jsp");
+                } else {
+                    myOpenWindow('无此物流单号信息！');
+                }
+            }
+        })
+    }
+})
+
 var mouse = {x: 0, y: 0};
 var myWidth = 0, myHeight = 0;
 var mouseIsDown = false;

@@ -33,9 +33,9 @@ public class GoodsController {
     @Autowired
     ReaderService readerService;
 
-    @RequestMapping(value = "/jijianControl", method = RequestMethod.POST)
+    @RequestMapping(value = "/SendControl", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> jijianControl(GoodsBean goodsBean){
+    public Map<String, Object> SendControl(GoodsBean goodsBean){
         System.loadLibrary("UHF_Reader18");
         Map<String, Object> resultMap = new HashMap<>();
         Reader18 reader18 = new Reader18();
@@ -52,7 +52,8 @@ public class GoodsController {
                     goodsService.saveGoods(goodsBean);
                     LogisticsInfoBean logisticsInfoBean = new LogisticsInfoBean();
                     logisticsInfoBean.setGoodsIndexCode(indexCode);
-                    logisticsInfoBean.setGoodsPosition("已交由寄件员处理");//运输开始没到就近的集散中心
+                    logisticsInfoBean.setGoodsPosition("已交由寄件员处理");
+                    logisticsInfoBean.setGoodsGPSInfo(readerBean.getReaderGPS());
                     logisticsInfoBean.setTimeInfo(MyTools.getDateString());
                     logisticsService.insert(logisticsInfoBean);
                     //写入标签EPC号
@@ -83,9 +84,9 @@ public class GoodsController {
         return resultMap;
     }
 
-    @RequestMapping(value = "/chaxunControl", method = RequestMethod.POST)
+    @RequestMapping(value = "/QueryControl", method = RequestMethod.POST)
     @ResponseBody
-    public LogisticsInfoBean chaxunControl(String goodsIndexCode, HttpServletRequest request) {
+    public LogisticsInfoBean QueryControl(String goodsIndexCode, HttpServletRequest request) {
         LogisticsInfoBean logisticsInfoBean = logisticsService.fetchGoodsByGoodsIndexCode(goodsIndexCode);
         if (logisticsInfoBean != null) {
             request.getSession().setAttribute("goodsIndexCode", goodsIndexCode);
@@ -123,5 +124,26 @@ public class GoodsController {
         map.put("GPSList", GPSList);
         map.put("PositionList", PositionList);
         return map;
+    }
+
+    @RequestMapping(value = "/fetchAllGoodsController", method = RequestMethod.POST)
+    @ResponseBody
+    public List<GoodsBean> fetchAll() {
+        List<GoodsBean> goodsBeanList =  goodsService.fetchAll();
+        return goodsBeanList;
+    }
+
+    @RequestMapping(value = "/ConfirmReceiveController", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> ConfirmReceiveController(String indexCode) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            goodsService.ConfirmReceive(indexCode);
+            result.put("resultCode", 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("resultCode", -1);
+        }
+        return result;
     }
 }

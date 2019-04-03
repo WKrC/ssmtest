@@ -7,4 +7,6 @@ import java.util.List;
 public interface GoodsDao {
     void saveGoods(GoodsBean goodsBean);
     List<GoodsBean> fetchGoods(String goodsIndexCode);
+    List<GoodsBean> fetchAll();
+    void ConfirmReceive(String indexCode);
 }

@@ -27,6 +27,8 @@ public class GoodsBean {
     private String consignee_addr;
     @Column(name = "remaker")
     private String remaker;
+    @Column(name = "isover")
+    private Integer isOver;
 
     public int getGoodsId() {
         return goodsId;
@@ -98,5 +100,13 @@ public class GoodsBean {
 
     public void setRemaker(String remaker) {
         this.remaker = remaker;
+    }
+
+    public Integer getIsOver() {
+        return isOver;
+    }
+
+    public void setIsOver(Integer isOver) {
+        this.isOver = isOver;
     }
 }

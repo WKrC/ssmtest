@@ -23,4 +23,14 @@ public class GoodsServiceImpl implements GoodsService {
     public List<GoodsBean> fetchGoods(String goodsIndexCode) {
         return goodsDao.fetchGoods(goodsIndexCode);
     }
+
+    @Override
+    public List<GoodsBean> fetchAll() {
+        return goodsDao.fetchAll();
+    }
+
+    @Override
+    public void ConfirmReceive(String indexCode) {
+        goodsDao.ConfirmReceive(indexCode);
+    }
 }

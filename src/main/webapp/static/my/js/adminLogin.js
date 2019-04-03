@@ -15,7 +15,7 @@ $("#loginButton").click(function () {
             url: "adminLogin",
             success: function (result) {
                 if (result.resultCode == 1) {
-                    myOpenWindow("成功")
+                    window.location.replace("ReaderSet.jsp");
                 }
                 if (result.resultCode == -1) {
                     myOpenWindow("账号不存在或密码错误！")

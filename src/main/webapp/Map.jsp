@@ -88,7 +88,6 @@
                 success : function (result) {
                     var GPSList = result.GPSList;
                     var PositionList = result.PositionList;
-                    console.info(GPSList);
                     if (GPSList.length > 0) {
                         GPSList.forEach(function (node) {
                             node = node.replace("\"","");
@@ -101,27 +100,28 @@
                             lineArr2.push(arr_num);
                         });
                     }
-
+                    console.info(lineArr2);
+                    console.info(lineArr);
                     var position_str = "";
                     PositionList.forEach(function (node) {
                         position_str += node + "<br><br>";
                     })
                     layer.open({
-                        type: 1
-                        ,title: "物流信息"
-                        ,closeBtn: 0
-                        ,skin: "layui-layer-lan"
-                        ,offset: ['50px', '1700px']
-                        ,content: '<div style="padding: 40px 40px; font-size: 14px;">'+ position_str +'</div>'
-                        ,shade: 0 //不显示遮罩
+                        type: 1,
+                        title: "物流信息",
+                        closeBtn: 0,
+                        skin: "layui-layer-lan",
+                        offset: ['5%', '80%'],
+                        content: '<div style="padding: 40px 40px; font-size: 14px;">'+ position_str +'</div>',
+                        shade: 0 //不显示遮罩
                     });
                 }
             })
             var marker = new AMap.Marker({
                 map: map,
-                position: [116.478935,39.997761],
+                position: lineArr2[0],
                 icon: "https://webapi.amap.com/images/car.png",
-                offset: new AMap.Pixel(-26, -13),
+               // offset: new AMap.Pixel(-26, -13),
                 autoRotation: true,
                 angle:-90,
             });

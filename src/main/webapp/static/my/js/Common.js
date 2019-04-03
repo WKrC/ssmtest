@@ -5,7 +5,7 @@ function myOpenWindow(msg) {
         title: '来自程序猿的提示',
         content: '<div style="text-align: center;padding: 10px; line-height: 22px; color: black; font-weight: normal;">' + msg + '</div>',
         skin: "layui-layer-molv",
-        offset: ['40%', '43.5%']
+        offset: ['40%', '43%']
     });
 }
 
@@ -16,7 +16,7 @@ function OpenNoCloseWindow(msg) {
         title: '来自程序猿的提示',
         content: '<div style="text-align: center;padding: 10px; line-height: 22px; color: black; font-weight: normal;">' + msg + '</div>',
         skin: "layui-layer-molv",
-        offset: ['40%', '45%'],
+        offset: ['40%', '43%'],
         closeBtn: 0,
         btn: null
     });
