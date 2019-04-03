@@ -127,7 +127,15 @@ public class ReaderController {
             temp.setReaderSetMAC(MyTools.getLocalMac());
             ReaderBean readerBean = readerService.fetchReaderByMAC(temp);
             if (readerBean == null) {
-                result.put("resultCode", -2);//阅读器未设置
+                System.loadLibrary("UHF_Reader18");
+                Reader18 reader18 = new Reader18();
+                int[] AutoOpenComPort_input_parameter = {0, 5};
+                int[] AutoOpenComPort_output_parameter= reader18.AutoOpenComPort(AutoOpenComPort_input_parameter);
+                if (AutoOpenComPort_output_parameter[0] == 0){
+                    result.put("resultCode", -2);//设置阅读器但阅读器在线
+                } else {
+                    result.put("resultCode", -3);//设置阅读器但阅读器不在线
+                }
             }else {
                 if (readerBean.getIsOnline() == 1) {
                     result.put("resultCode", 1);//阅读器在线

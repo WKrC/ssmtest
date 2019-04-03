@@ -30,7 +30,7 @@ function tipSetReader() {
         offset: ['40%', '43%'],
         yes: function(){
             layer.closeAll();
-            window.location.replace("ReaderSet.jsp");
+            window.location.replace("adminLogin.jsp");
         }
     })
 }
@@ -53,7 +53,11 @@ function ReaderIsOnline() {
                 myOpenWindow("获取阅读器信息异常！");
                 runFlag = false;
             }
-            if (data != undefined  && data.resultCode == -2 && closeFlag != 3){
+            if (data != undefined  && data.resultCode == -2){
+                tipSetReader();
+                runFlag = false;
+            }
+            if (data != undefined  && data.resultCode == -3){
                 tipSetReader();
                 runFlag = false;
             }

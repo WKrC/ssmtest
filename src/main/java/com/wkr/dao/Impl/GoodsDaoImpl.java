@@ -46,7 +46,7 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public List<GoodsBean> fetchAll() {
-        return (List<GoodsBean>) template.find("from GoodsBean");
+        return (List<GoodsBean>) template.find("from GoodsBean ORDER BY goodsIndexCode DESC");
     }
 
     @Override
@@ -55,6 +55,21 @@ public class GoodsDaoImpl implements GoodsDao {
         //getCurrentSession 是获取当前session对象，连续使用多次时，得到的session都是同一个对象
         Session session = template.getSessionFactory().openSession();
         Query query = session.createQuery("update GoodsBean set isOver = 1 where goodsIndexCode =: IndexCode");
+        query.setString("IndexCode", indexCode);
+        //使用getCurrentSession 会出现异常：Transaction already active事务已经开启
+        session.beginTransaction();//开启事务 猜想是spring 配置的事务作用域并没有达到 session导致
+        query.executeUpdate();
+        session.getTransaction().commit();//commit 隐式调用了session.flush() 不要再显式调用否则报错
+        session.close();
+    }
+
+    @Override
+    public void setNowPosition(String ReaderName, String indexCode) {
+        //openSession 每次使用都是打开一个新的session，使用完需要调用close方法关闭session
+        //getCurrentSession 是获取当前session对象，连续使用多次时，得到的session都是同一个对象
+        Session session = template.getSessionFactory().openSession();
+        Query query = session.createQuery("update GoodsBean set nowPosition =: position where goodsIndexCode =: IndexCode");
+        query.setString("position", ReaderName);
         query.setString("IndexCode", indexCode);
         //使用getCurrentSession 会出现异常：Transaction already active事务已经开启
         session.beginTransaction();//开启事务 猜想是spring 配置的事务作用域并没有达到 session导致

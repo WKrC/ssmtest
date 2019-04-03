@@ -15,8 +15,8 @@
 </head>
 <body>
 <div id="lampadario">
-    <input hidden id="lightButton" type="radio" name="switch" value="on" />
-    <input hidden type="radio" name="switch" value="off" checked="checked" />
+    <input hidden id="lightButton" type="radio" checked="checked" name="switch" value="on" />
+    <input hidden type="radio" name="switch" value="off"  />
     <label for="switch"></label>
     <div id="filo"></div>
     <div id="lampadina">
@@ -46,22 +46,22 @@
         </tr>
         </thead>
         <tbody id="dataList">
-        <tr>
-            <td>0123456789111213</td>
-            <td>吴康榕</td>
-            <td>13132560116</td>
-            <td>吴沁</td>
-            <td>18759012643</td>
-            <td><button class="layui-btn" onclick="ConfirmReceive()">确认签收</button></td>
-        </tr>
-        <tr>
-            <td>0123456789111213</td>
-            <td>吴康榕</td>
-            <td>13132560116</td>
-            <td>吴沁</td>
-            <td>18759012643</td>
-            <td><button class="layui-btn layui-btn-disabled">已签收</button></td>
-        </tr>
+        <%--<tr>--%>
+            <%--<td>0123456789111213</td>--%>
+            <%--<td>吴康榕</td>--%>
+            <%--<td>13132560116</td>--%>
+            <%--<td>吴沁</td>--%>
+            <%--<td>18759012643</td>--%>
+            <%--<td><button class="layui-btn" onclick="ConfirmReceive()">确认签收</button></td>--%>
+        <%--</tr>--%>
+        <%--<tr>--%>
+            <%--<td>0123456789111213</td>--%>
+            <%--<td>吴康榕</td>--%>
+            <%--<td>13132560116</td>--%>
+            <%--<td>吴沁</td>--%>
+            <%--<td>18759012643</td>--%>
+            <%--<td><button class="layui-btn layui-btn-disabled">已签收</button></td>--%>
+        <%--</tr>--%>
         </tbody>
     </table>
     <div id="pagediv" style="margin-top: 1%;margin-left: 40%"></div>
@@ -72,6 +72,7 @@
 <script src="static/layui/layui.all.js" charset="UTF-8"></script>
 <script type="text/javascript"
         src="static/paginationjs-master-2.1.0/dist/pagination.min.js"></script>
+<script src="static/my/js/Common.js"></script>
 <script>
     $(function () {
         $.ajax({
@@ -99,7 +100,6 @@
                     var StrHtml ="<button class=\"layui-btn layui-btn-disabled\">已签收</button>";
                     $("#" + indexCode).html(StrHtml);
                     isOverArray.push(indexCode);
-
                 }
                 if (data.resultCode == -1) {
                     myOpenWindow("签收失败！");
@@ -144,8 +144,7 @@
                     strHtml+="<td>";
                     strHtml+=eachVal.consignee_phone;
                     strHtml+="</td>";
-
-                    if (eachVal.isOver == 1 || isOverArray.indexOf(eachVal.goodsIndexCode) > -1){
+                    if (eachVal.isOver == 1 || contains(isOverArray,eachVal.goodsIndexCode) > -1){
                         strHtml+="<td>";
                         strHtml+="<button class=\"layui-btn layui-btn-disabled\">已签收</button>";
                         strHtml+="</td>";

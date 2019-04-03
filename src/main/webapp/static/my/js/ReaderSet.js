@@ -21,9 +21,13 @@ function ReaderIsOnline() {
                 myOpenWindow("获取阅读器信息异常！");
                 runFlag = false;
             }
+
+            if (data != undefined  && data.resultCode == -3){
+                OpenNoCloseWindow("阅读器不在线！请确保连通阅读器！");
+                runFlag = false;
+            }
         }
     })
-    console.info("runFlag:" + runFlag)
     return runFlag;
 }
 

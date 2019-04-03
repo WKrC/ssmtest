@@ -21,3 +21,13 @@ function OpenNoCloseWindow(msg) {
         btn: null
     });
 }
+function contains(arr, obj) {
+    //while
+    var i = arr.length;
+    while(i--) {
+        if(arr[i] == obj) {
+            return i;
+        }
+    }
+    return -1;
+}

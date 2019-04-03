@@ -4,6 +4,7 @@ import UHF.Reader18;
 import com.wkr.Tools.MyTools;
 import com.wkr.bean.LogisticsInfoBean;
 import com.wkr.bean.ReaderBean;
+import com.wkr.service.GoodsService;
 import com.wkr.service.LogisticsService;
 import com.wkr.service.ReaderService;
 import org.apache.commons.lang3.ArrayUtils;
@@ -23,6 +24,8 @@ public class TimerTask {
     ReaderService readerService;
     @Autowired
     LogisticsService logisticsService;
+    @Autowired
+    GoodsService goodsService;
 
     /**
      * 阅读器定时标签巡查任务
@@ -52,6 +55,7 @@ public class TimerTask {
                 int[] AutoOpenComPort_output_parameter= reader18.AutoOpenComPort(AutoOpenComPort_input_parameter);
                 if (AutoOpenComPort_output_parameter[0] == 0){ //阅读器连接成功
                     /**读写标签部分代码*/
+                    readerService.updateReaderIsOnline(readerBean.getReaderSetMAC(), 1);
                     //询查标签命令输入参数
                     /**
                      * 数组0：阅读器16进制地址
@@ -145,6 +149,7 @@ public class TimerTask {
                                 String nowDate = logisticsInfoBean.getTimeInfo() + ";" + MyTools.getDateString();
                                 logisticsInfoBean.setTimeInfo(nowDate);
                                 logisticsService.updateGoods(logisticsInfoBean);
+                                goodsService.setNowPosition(readerBean.getReaderName(), indexCode);
                             }
                         }
                     }

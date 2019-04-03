@@ -185,4 +185,13 @@ public class Tests {
         MyTools.log(c);
     }
 
+    @Test
+    public void aaa(){
+        try {
+            System.out.print(MyTools.getLocalMac());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

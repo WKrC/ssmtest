@@ -49,6 +49,7 @@ public class GoodsController {
                 if (AutoOpenComPort_output_parameter[0] == 0) {//阅读器在线
                     String indexCode = MyTools.getIndexCode();
                     goodsBean.setGoodsIndexCode(indexCode);
+                    goodsBean.setNowPosition(readerBean.getReaderName());
                     goodsService.saveGoods(goodsBean);
                     LogisticsInfoBean logisticsInfoBean = new LogisticsInfoBean();
                     logisticsInfoBean.setGoodsIndexCode(indexCode);

@@ -29,6 +29,8 @@ public class GoodsBean {
     private String remaker;
     @Column(name = "isover")
     private Integer isOver;
+    @Column(name = "nowposition")
+    private String nowPosition;
 
     public int getGoodsId() {
         return goodsId;
@@ -108,5 +110,13 @@ public class GoodsBean {
 
     public void setIsOver(Integer isOver) {
         this.isOver = isOver;
+    }
+
+    public String getNowPosition() {
+        return nowPosition;
+    }
+
+    public void setNowPosition(String nowPosition) {
+        this.nowPosition = nowPosition;
     }
 }

@@ -33,4 +33,9 @@ public class GoodsServiceImpl implements GoodsService {
     public void ConfirmReceive(String indexCode) {
         goodsDao.ConfirmReceive(indexCode);
     }
+
+    @Override
+    public void setNowPosition(String ReaderName, String indexCode) {
+        goodsDao.setNowPosition(ReaderName, indexCode);
+    }
 }

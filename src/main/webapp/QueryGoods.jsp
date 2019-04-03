@@ -51,7 +51,7 @@
     <div class="layui-form-item">
         <div class="layui-input-block">
             <input type="text" id="goodsIndexCode" style="z-index: 10002;position: absolute;width: 20%; margin-top: 28%; margin-left: 33%;" name="title" lay-verify="title" autocomplete="off" placeholder="请输入物流单号" class="layui-input">
-            <button id="querybutton" style="z-index: 10002;position: absolute;width: 5%;margin-top: 28%; margin-left: 54%;" class="layui-btn layui-btn-fluid">物流查询</button>
+            <button id="querybutton" style="z-index: 10002;position: absolute;width: 8%;margin-top: 28%; margin-left: 54%;" class="layui-btn layui-btn-fluid">物流查询</button>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

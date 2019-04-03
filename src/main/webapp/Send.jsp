@@ -30,7 +30,7 @@
         </div>
     </div>
 </div>
-<div id="DisplayBlock" class="layui-input-block" style="top: -5%;">
+<div id="DisplayBlock" class="layui-input-block" style="top: -5%;display: none;">
     <input type="text" id="sender" style="z-index: 3;position: absolute;width: 20%; margin-top: 24%; margin-left: 37%;" name="title" lay-verify="title" autocomplete="off" placeholder="请输入寄件人" class="layui-input">
     <input type="text" id="sender_phone" style="z-index: 3;position: absolute;width: 20%; margin-top: 27%; margin-left: 37%;" name="title" lay-verify="title" autocomplete="off" placeholder="请输入寄件人联系方式址" class="layui-input">
     <input type="text" id="sender_addr" style="z-index: 3;position: absolute;width: 20%; margin-top: 30%; margin-left: 37%;" name="title" lay-verify="title" autocomplete="off" placeholder="请输入寄件人地址" class="layui-input">

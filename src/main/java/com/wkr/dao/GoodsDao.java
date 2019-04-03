@@ -9,4 +9,5 @@ public interface GoodsDao {
     List<GoodsBean> fetchGoods(String goodsIndexCode);
     List<GoodsBean> fetchAll();
     void ConfirmReceive(String indexCode);
+    void setNowPosition(String ReaderName, String indexCode);
 }
