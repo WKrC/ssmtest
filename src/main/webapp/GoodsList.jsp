@@ -85,6 +85,7 @@
     })
     //确认签收
     var isOverArray = new Array() ;
+    //https://www.cnblogs.com/yunshangwuyou/p/9032560.html
     function ConfirmReceive(indexCode) {
         $.ajax({
             async: false,
@@ -97,6 +98,7 @@
                 if (data.resultCode == 1) {
                     var StrHtml ="<button class=\"layui-btn layui-btn-disabled\">已签收</button>";
                     $("#" + indexCode).html(StrHtml);
+                    isOverArray.push(indexCode);
 
                 }
                 if (data.resultCode == -1) {
@@ -143,7 +145,7 @@
                     strHtml+=eachVal.consignee_phone;
                     strHtml+="</td>";
 
-                    if (eachVal.isOver == 1){
+                    if (eachVal.isOver == 1 || isOverArray.indexOf(eachVal.goodsIndexCode) > -1){
                         strHtml+="<td>";
                         strHtml+="<button class=\"layui-btn layui-btn-disabled\">已签收</button>";
                         strHtml+="</td>";
