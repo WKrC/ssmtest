@@ -84,6 +84,7 @@
         })
     })
     //确认签收
+    var isOverArray = new Array() ;
     function ConfirmReceive(indexCode) {
         $.ajax({
             async: false,
