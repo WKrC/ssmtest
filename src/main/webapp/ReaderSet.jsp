@@ -9,24 +9,36 @@
 <html>
 <head>
     <title>读写器设置</title>
-    <link rel="stylesheet" href="static/my/css/ReaderSet.css">
+    <link rel="stylesheet" href="static/my/css/ReaderSendCommom.css">
+    <link rel="stylesheet" href="static/layui/css/layui.css"  media="all">
 </head>
 <body>
 <div id="lampadario">
-    <input type="radio" name="switch" value="on" />
-    <input type="radio" name="switch" value="off" checked="checked" />
+    <input hidden id="lightButton" type="radio" name="switch" value="on" />
+    <input hidden type="radio" name="switch" value="off" checked="checked" />
     <label for="switch"></label>
     <div id="filo"></div>
     <div id="lampadina">
         <div id="sorpresa">
             <div id="footer">
-                Hello there!
+
             </div>
             <div id="shadow">
-                Hello there!
+
             </div>
         </div>
     </div>
 </div>
+<div class="layui-input-block" style="top: -5%;">
+    <input type="text" id="ReaderName" style="z-index: 3;position: absolute;width: 20%; margin-top: 24%; margin-left: 37%;" name="title" lay-verify="title" autocomplete="off" placeholder="请输入读写器名" class="layui-input">
+    <input type="text" id="ReaderAddress" style="z-index: 3;position: absolute;width: 20%; margin-top: 27%; margin-left: 37%;" name="title" lay-verify="title" autocomplete="off" placeholder="请输入读写器地址" class="layui-input">
+    <input type="text" id="ReaderGPS" style="z-index: 3;position: absolute;width: 12%; margin-top: 30%; margin-left: 37%;" readonly name="title" lay-verify="title" autocomplete="off" placeholder="请获取经纬度" class="layui-input">
+    <button id="getGPSButton" style="z-index: 3;position: absolute;width: 7.5%;margin-top: 30%; margin-left: 49.5%;" class="layui-btn layui-btn-fluid">获取经纬度</button>
+    <button id="saveReaderbutton" style="z-index: 3;position: absolute;width: 20%;margin-top: 33%; margin-left: 37%;" class="layui-btn layui-btn-fluid">保存设置</button>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="static/my/js/ReaderSendCommom.js"></script>
+<script src="static/layui/layui.js" charset="utf-8"></script>
+<script src="static/layui/layui.all.js"></script>
 </body>
 </html>
