@@ -25,8 +25,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<GoodsBean> fetchAll() {
-        return goodsDao.fetchAll();
+    public List<GoodsBean> fetchAll(String position) {
+        return goodsDao.fetchAll(position);
     }
 
     @Override

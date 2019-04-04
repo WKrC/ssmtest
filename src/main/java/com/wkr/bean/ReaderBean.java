@@ -1,5 +1,8 @@
 package com.wkr.bean;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,6 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Reader", catalog = "postgres")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ReaderBean {
     @Id
     private Integer ReaderHEXAddr;

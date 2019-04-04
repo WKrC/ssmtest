@@ -1,6 +1,6 @@
 $(function () {
     ControlDisplay();
-    window.setInterval(ControlDisplay, 30000);//每隔三十秒检查
+    window.setInterval(ControlDisplay, 10000);//每隔十秒检查
 })
 //获取阅读器状态
 function ReaderIsOnline() {
@@ -8,13 +8,13 @@ function ReaderIsOnline() {
     $.ajax({
         type: "POST",
         async: false,
-        url:"ReaderIsOnline",
+        url: "ReaderIsOnline",
         success: function (data) {
             if (data != undefined  && data.resultCode == 1){
                 layer.closeAll();
             }
             if (data != undefined  && data.resultCode == 0){
-                OpenNoCloseWindow("阅读器不在线！请确保连通阅读器！");
+                OpenNoCloseWindow("阅读器不在线！请确保连通阅读器aaa！");
                 runFlag = false;
             }
             if (data != undefined  && data.resultCode == -1){
@@ -23,7 +23,7 @@ function ReaderIsOnline() {
             }
 
             if (data != undefined  && data.resultCode == -3){
-                OpenNoCloseWindow("阅读器不在线！请确保连通阅读器！");
+                OpenNoCloseWindow("阅读器不在线！请确保连通阅读器bb！");
                 runFlag = false;
             }
         }

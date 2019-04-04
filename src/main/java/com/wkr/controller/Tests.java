@@ -1,20 +1,13 @@
-package com.wkr.action;
+package com.wkr.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.wkr.Tools.MyTools;
 import com.wkr.bean.GoodsBean;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apiguardian.api.API;
 import org.junit.jupiter.api.Test;
-import org.springframework.util.concurrent.ListenableFuture;
 
-import javax.xml.ws.Response;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Tests {

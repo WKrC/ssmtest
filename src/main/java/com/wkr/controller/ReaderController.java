@@ -1,4 +1,4 @@
-package com.wkr.action;
+package com.wkr.controller;
 
 import com.wkr.Tools.MyTools;
 import UHF.Reader18;
@@ -132,9 +132,9 @@ public class ReaderController {
                 int[] AutoOpenComPort_input_parameter = {0, 5};
                 int[] AutoOpenComPort_output_parameter= reader18.AutoOpenComPort(AutoOpenComPort_input_parameter);
                 if (AutoOpenComPort_output_parameter[0] == 0){
-                    result.put("resultCode", -2);//设置阅读器但阅读器在线
+                    result.put("resultCode", -2);//阅读器未设置但阅读器在线
                 } else {
-                    result.put("resultCode", -3);//设置阅读器但阅读器不在线
+                    result.put("resultCode", -3);//阅读器未设置但阅读器不在线
                 }
             }else {
                 if (readerBean.getIsOnline() == 1) {

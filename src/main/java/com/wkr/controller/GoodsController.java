@@ -1,11 +1,10 @@
-package com.wkr.action;
+package com.wkr.controller;
 
 import UHF.Reader18;
 import com.wkr.Tools.MyTools;
 import com.wkr.bean.GoodsBean;
 import com.wkr.bean.LogisticsInfoBean;
 import com.wkr.bean.ReaderBean;
-import com.wkr.dao.GoodsDao;
 import com.wkr.service.GoodsService;
 import com.wkr.service.LogisticsService;
 import com.wkr.service.ReaderService;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -48,15 +45,6 @@ public class GoodsController {
                 int[] AutoOpenComPort_output_parameter= reader18.AutoOpenComPort(AutoOpenComPort_input_parameter);
                 if (AutoOpenComPort_output_parameter[0] == 0) {//阅读器在线
                     String indexCode = MyTools.getIndexCode();
-                    goodsBean.setGoodsIndexCode(indexCode);
-                    goodsBean.setNowPosition(readerBean.getReaderName());
-                    goodsService.saveGoods(goodsBean);
-                    LogisticsInfoBean logisticsInfoBean = new LogisticsInfoBean();
-                    logisticsInfoBean.setGoodsIndexCode(indexCode);
-                    logisticsInfoBean.setGoodsPosition("已交由寄件员处理");
-                    logisticsInfoBean.setGoodsGPSInfo(readerBean.getReaderGPS());
-                    logisticsInfoBean.setTimeInfo(MyTools.getDateString());
-                    logisticsService.insert(logisticsInfoBean);
                     //写入标签EPC号
                     int[] Reader_Data = {readerBean.getReaderHEXAddr(), 0, 0, 0, 0, 8};
                     int[] EPCData = MyTools.StringToArray(indexCode);
@@ -69,6 +57,18 @@ public class GoodsController {
                     int[] WriteEPC_G2_Input_Parameter = ArrayUtils.toPrimitive(WriteEPC_G2_Input_Integer);
                     int[] WriteEPC_G2_Outputput_Parameter = reader18.WriteEPC_G2(WriteEPC_G2_Input_Parameter);
                     if (WriteEPC_G2_Outputput_Parameter[0] == 0) {
+                        //保存物品信息
+                        goodsBean.setGoodsIndexCode(indexCode);
+                        goodsBean.setNowPosition(readerBean.getReaderName());
+                        goodsBean.setIsOver(0);
+                        goodsService.saveGoods(goodsBean);
+                        //更新物流信息
+                        LogisticsInfoBean logisticsInfoBean = new LogisticsInfoBean();
+                        logisticsInfoBean.setGoodsIndexCode(indexCode);
+                        logisticsInfoBean.setGoodsPosition("已交由寄件员处理");
+                        logisticsInfoBean.setGoodsGPSInfo(readerBean.getReaderGPS());
+                        logisticsInfoBean.setTimeInfo(MyTools.getDateString());
+                        logisticsService.insert(logisticsInfoBean);
                         resultMap.put("indexCode", indexCode);//返回EPC号即物流号
                     } else {
                         resultMap.put("indexCode", -3);//设置EPC号失败
@@ -130,7 +130,14 @@ public class GoodsController {
     @RequestMapping(value = "/fetchAllGoodsController", method = RequestMethod.POST)
     @ResponseBody
     public List<GoodsBean> fetchAll() {
-        List<GoodsBean> goodsBeanList =  goodsService.fetchAll();
+        ReaderBean temp = new ReaderBean();
+        try {
+            temp.setReaderSetMAC(MyTools.getLocalMac());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        ReaderBean readerBean = readerService.fetchReaderByMAC(temp);
+        List<GoodsBean> goodsBeanList =  goodsService.fetchAll(readerBean.getReaderName());
         return goodsBeanList;
     }
 

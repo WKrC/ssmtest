@@ -1,16 +1,16 @@
 $(function () {
     //判断阅读器是否设置
-    $.ajax({
-        type: "POST",
-        url: "fetchReaderControl",
-        success: function (result) {
-            log(result);
-            if(result == null || result == "") {
-                tipSetReader();
-            }
-        }
-    })
-    //ReaderIsOnline();
+    // $.ajax({
+    //     type: "POST",
+    //     url: "fetchReaderControl",
+    //     success: function (result) {
+    //         log(result);
+    //         if(result == null || result == "") {
+    //             tipSetReader();
+    //         }
+    //     }
+    // })
+    // //ReaderIsOnline();
     //window.setInterval(ReaderIsOnline, 30000);//每隔三十秒检查
 })
 function tipSetReader() {
@@ -41,7 +41,7 @@ function ReaderIsOnline() {
                 layer.closeAll();
             }
             if (data != undefined  && data.resultCode == 0){
-                OpenNoCloseWindow("阅读器不在线！请确保连通阅读器！");
+                OpenNoCloseWindow("阅读器不在线！请确保连通阅读器！dd");
                 runFlag = false;
             }
             if (data != undefined  && data.resultCode == -1){

@@ -49,6 +49,7 @@ let rotationY = 0.5;
 let speed = 40;
 let animFrame;
 const texts = [
+    'Java is the best language',
     'hello.',
     'Hello World!',
     'Greetings from programmed apes',

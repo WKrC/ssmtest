@@ -29,6 +29,7 @@ public class ReaderDaoImpl implements ReaderDao {
     @Override
     public ReaderBean fetchReaderByMAC(ReaderBean readerBean) {
         List<ReaderBean> resultList = template.findByExample(readerBean);
+        template.setCacheQueries(true);
         if (resultList.size() > 0){
             return resultList.get(0);
         }else {

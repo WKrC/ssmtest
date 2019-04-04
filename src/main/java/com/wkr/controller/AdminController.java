@@ -1,4 +1,4 @@
-package com.wkr.action;
+package com.wkr.controller;
 
 import com.wkr.bean.AdminBean;
 import com.wkr.service.AdminService;

@@ -832,7 +832,7 @@
           case 'isDisabled':
             return container.data('pagination').model.disabled === true;
           default:
-            throwError('Unknown action: ' + options);
+            throwError('Unknown controller: ' + options);
         }
         return this;
       } else {

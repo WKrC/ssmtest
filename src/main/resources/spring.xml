@@ -41,18 +41,17 @@
                 <!-- 数据库方言 -->
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
                 <!-- 配置启用二级缓存 -->
-                <!--<prop key="hibernate.cache.use_second_level_cache">true</prop>-->
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <!-- 配置使用查询缓存 -->
-                <!--<prop key="hibernate.cache.use_query_cache">true</prop>-->
+                <prop key="hibernate.cache.use_query_cache">true</prop>
                 <!-- 配置二级缓存的提供商 -->
-                <!--<prop key="hibernate.cache.region.factory_class"> org.hibernate.cache.EhCacheRegionFactory</prop>-->
+                <prop key="hibernate.cache.region.factory_class"> org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
                 <!-- 加载缓存所需配置文件 -->
-                <!--<prop key="hibernate.net.sf.ehcache.configurationResourceName">classpath:ehcache.xml</prop>-->
+                <prop key="hibernate.net.sf.ehcache.configurationResourceName">classpath:ehcache.xml</prop>
             </props>
         </property>
         <!-- 扫描并加载注解过的实体类 -->
         <property name="packagesToScan" value="com.wkr.bean"/>
-
     </bean>
 
     <!-- 配置hibernateTemplate对象 -->
@@ -63,7 +62,7 @@
         <!-- hibernate报的只读权限的问题添加这个 -->
         <property name="checkWriteOperations" value="false"/>
         <!-- 使用查询缓存 -->
-        <!--<property name="cacheQueries" value="true"/>-->
+        <property name="cacheQueries" value="true"/>
     </bean>
 
     <!-- 配置事务管理器 -->

@@ -15,8 +15,8 @@
 </head>
 <body>
 <div id="lampadario">
-    <input hidden id="lightButton" type="radio" checked="checked" name="switch" value="on" />
-    <input hidden type="radio" name="switch" value="off"  />
+    <input hidden id="lightButton" type="radio"  name="switch" value="on" />
+    <input hidden type="radio" name="switch" value="off" checked="checked" />
     <label for="switch"></label>
     <div id="filo"></div>
     <div id="lampadina">
@@ -30,7 +30,7 @@
         </div>
     </div>
 </div>
-<div id="nuknow"  style="position: absolute;width: 50%;margin-left: 25%;margin-top: 14%;">
+<div id="DisplayBlock"  style="display: none;position: absolute;width: 50%;margin-left: 25%;margin-top: 14%;">
     <table id="dataTable" class="layui-table" style="margin: 0px;">
         <colgroup>
 
@@ -64,7 +64,7 @@
         <%--</tr>--%>
         </tbody>
     </table>
-    <div id="pagediv" style="margin-top: 1%;margin-left: 40%"></div>
+    <div id="pagediv" style="margin-top: 1%;margin-left: 40%;display: none;"></div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" charset="UTF-8"></script>
@@ -73,94 +73,7 @@
 <script type="text/javascript"
         src="static/paginationjs-master-2.1.0/dist/pagination.min.js"></script>
 <script src="static/my/js/Common.js"></script>
-<script>
-    $(function () {
-        $.ajax({
-            async: false,
-            type: "POST",
-            url: "fetchAllGoodsController",
-            success: function (data) {
-                doPaging(data);
-            }
-        })
-    })
-    //确认签收
-    var isOverArray = new Array() ;
-    //https://www.cnblogs.com/yunshangwuyou/p/9032560.html
-    function ConfirmReceive(indexCode) {
-        $.ajax({
-            async: false,
-            data: {
-                'indexCode':indexCode
-            },
-            type: "POST",
-            url: "ConfirmReceiveController",
-            success: function (data) {
-                if (data.resultCode == 1) {
-                    var StrHtml ="<button class=\"layui-btn layui-btn-disabled\">已签收</button>";
-                    $("#" + indexCode).html(StrHtml);
-                    isOverArray.push(indexCode);
-                }
-                if (data.resultCode == -1) {
-                    myOpenWindow("签收失败！");
-                }
-            }
-        })
-    }
-    // 分页处理
-    function doPaging(data,pagesize){
-        if(isNaN(pagesize) || pagesize<=0){
-            pagesize = 7; // 默认页面大小为5条记录
-        }
-        // 获取显示分页控件的div
-        $('#pagediv').pagination({
-            dataSource: data, // 分页的数据源（可以是ajax查询成功之后的json数据对象）
-            pageSize: pagesize,// 每页显示的记录条数
-            showGoInput: true, // 是否显示goin按钮
-            showGoButton: true,
-            callback: function(data, pagination) {
-                // 分页处理
-                // 解析拼写的html内容
-                var strHtml = "";
-                $.each(data, function(index, eachVal) {
-                    strHtml+="<tr>";
-
-                    strHtml+="<td>";
-                    strHtml+=eachVal.goodsIndexCode;
-                    strHtml+="</td>";
-
-                    strHtml+="<td>";
-                    strHtml+=eachVal.sender;
-                    strHtml+="</td>";
-
-                    strHtml+="<td>";
-                    strHtml+=eachVal.sender_phone;
-                    strHtml+="</td>";
-
-                    strHtml+="<td>";
-                    strHtml+=eachVal.consignee;
-                    strHtml+="</td>";
-
-                    strHtml+="<td>";
-                    strHtml+=eachVal.consignee_phone;
-                    strHtml+="</td>";
-                    if (eachVal.isOver == 1 || contains(isOverArray,eachVal.goodsIndexCode) > -1){
-                        strHtml+="<td>";
-                        strHtml+="<button class=\"layui-btn layui-btn-disabled\">已签收</button>";
-                        strHtml+="</td>";
-                    } else {
-                        strHtml+="<td id='" + eachVal.goodsIndexCode + "'>";
-                        strHtml+="<button class=\"layui-btn\" onclick=\"ConfirmReceive(" + eachVal.goodsIndexCode + ")\">确认签收</button>";
-                        strHtml+="</td>";
-                    }
-                    strHtml+="</tr>";
-                });
-
-                // 把解析的html内容，使用dom操作赋值到表格中
-                $("#dataList").html(strHtml);
-            }
-        })
-    }
-</script>
+<script src="static/my/js/GoodsList.js"></script>
+<script src="static/my/js/ReaderSendCommom.js"></script>
 </body>
 </html>

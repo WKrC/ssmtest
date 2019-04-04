@@ -6,7 +6,6 @@ $(function () {
         async: false,
         url: "fetchReaderControl",
         success: function (result) {
-            log(result);
             if(result == null || result == "") {
                 tipSetReader();
                 hasReader = false;
@@ -15,7 +14,7 @@ $(function () {
     })
     if (hasReader) {
         ControlDisplay();
-        window.setInterval(ControlDisplay, 30000);//每隔三十秒检查
+        window.setInterval(ControlDisplay, 10000);//每隔十秒检查
     }
 
 })
@@ -131,7 +130,19 @@ $("#submitbutton").click(function () {
                 'remaker': $("#remaker").val()
             },
             success: function (result) {
-                if (result && result.indexCode != undefined) {
+                if (result != undefined && result.indexCode == -3) {
+                    layer.closeAll();
+                    myOpenWindow("EPC设置失败！");
+                } else if (result != undefined && result.indexCode == -2) {
+                    layer.closeAll();
+                    myOpenWindow("阅读器不在线！请确保连通阅读器！");
+                } else if (result != undefined && result.indexCode == -1) {
+                    layer.closeAll();
+                    myOpenWindow("出现异常！");
+                } else if (result != undefined && result.indexCode == -0) {
+                    layer.closeAll();
+                    tipSetReader();
+                } else {
                     layer.open({
                         type: 1,
                         title: false,//不显示标题栏

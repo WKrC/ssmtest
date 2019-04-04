@@ -45,8 +45,16 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public List<GoodsBean> fetchAll() {
-        return (List<GoodsBean>) template.find("from GoodsBean ORDER BY goodsIndexCode DESC");
+    public List<GoodsBean> fetchAll(String position) {
+        Session session = template.getSessionFactory().openSession();
+        Query query = session.createQuery("from GoodsBean where nowPosition =: position ORDER BY goodsIndexCode DESC");
+        query.setString("position", position);
+        //使用getCurrentSession 会出现异常：Transaction already active事务已经开启
+        session.beginTransaction();//开启事务 猜想是spring 配置的事务作用域并没有达到 session导致
+        List<GoodsBean> goodsBeanList = query.list();
+        session.getTransaction().commit();//commit 隐式调用了session.flush() 不要再显式调用否则报错
+        session.close();
+        return goodsBeanList;
     }
 
     @Override
